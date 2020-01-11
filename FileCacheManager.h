@@ -9,12 +9,12 @@
 using namespace std;
 class FileCacheManager : public CacheManager {
   int numberOfSolutions;
-  unordered_map<Problem*,int> map;
+  unordered_map<int,bool> map;
   virtual void saveSolution(int, Solution *);
  public:
   FileCacheManager(){numberOfSolutions=0;};
   virtual bool isThereSolution(Problem *);
-  virtual Solution *getSolution(Problem *);
+  virtual Solution getSolution(Problem *);
 };
 
 #endif //EX4__FILECACHEMANAGER_H_

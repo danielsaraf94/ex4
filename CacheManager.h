@@ -10,9 +10,8 @@ class CacheManager {
   virtual void saveSolution(Problem*,Solution*)=0;
  public:
   virtual bool isThereSolution(Problem*)=0;
-  virtual Solution* getSolution(Problem*)=0;
-
-
+  virtual Solution getSolution(Problem*)=0;
+  virtual ~CacheManager(){};
 };
 
 #endif //EX4__CACHEMANAGER_H_
