@@ -4,8 +4,6 @@
 
 #ifndef EX4__SOLVER_H_
 #define EX4__SOLVER_H_
-#include "Solution.h"
-#include "Problem.h"
 #include <sys/socket.h>
 #include <string>
 #include <iostream>
@@ -15,7 +13,7 @@
 #include <thread>
 class Solver {
  public:
-  virtual Solution solve(Problem *) = 0;
+  virtual string solve(string *) = 0;
 };
 
 #endif //EX4__SOLVER_H_

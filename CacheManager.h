@@ -4,11 +4,13 @@
 
 #ifndef EX4__CACHEMANAGER_H_
 #define EX4__CACHEMANAGER_H_
-#include "Problem.h"
-#include "Solution.h"
+using namespace std;
 class CacheManager {
+  virtual void saveSolution(string, string) = 0;
  public:
-  virtual ~CacheManager(){};
+  virtual bool isThereSolution(string) = 0;
+  virtual string getSolution(string) = 0;
+  virtual ~CacheManager() {};
 };
 
 #endif //EX4__CACHEMANAGER_H_
