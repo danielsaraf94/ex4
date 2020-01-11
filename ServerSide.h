@@ -8,7 +8,7 @@
 namespace server_side {
 class Server {
  public:
-  virtual void open(int,ClientHandler*) = 0;
+  virtual void open(int, ClientHandler *) = 0;
   virtual void stop() = 0;
 };
 }
