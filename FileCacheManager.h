@@ -8,13 +8,14 @@
 #include "unordered_map"
 using namespace std;
 class FileCacheManager : public CacheManager {
-  int numberOfSolutions;
-  unordered_map<int,bool> map;
-  virtual void saveSolution(int, Solution *);
+  unordered_map<string,bool> map;
+  virtual void saveSolution(string,string);
+  void getMapInfo();
  public:
-  FileCacheManager(){numberOfSolutions=0;};
-  virtual bool isThereSolution(Problem *);
-  virtual Solution getSolution(Problem *);
+  FileCacheManager();
+  virtual bool isThereSolution(string);
+  virtual string getSolution(string);
+  virtual ~FileCacheManager();
 };
 
 #endif //EX4__FILECACHEMANAGER_H_

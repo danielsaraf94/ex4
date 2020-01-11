@@ -4,22 +4,48 @@
 #include <iostream>
 #include <fstream>
 #include "FileCacheManager.h"
-void FileCacheManager::saveSolution(int key, Solution *s) {
-  ofstream out_file{"Solution_" + to_string(key), ios::binary};
+FileCacheManager::FileCacheManager() {
+  try{
+    getMapInfo();
+  }catch(...){
+
+  }
+}
+void FileCacheManager:: getMapInfo(){
+  ifstream input_file("Map_Information");
+  if (!input_file) {
+    throw "File open error";
+  }
+  if (!input_file.read((char *) &this->map, sizeof(this->map))) {
+    throw "Extract Solution error";
+  }
+  input_file.close();
+}
+FileCacheManager::~FileCacheManager() {
+  ofstream out_file{"Map_Information", ios::binary};
   if (!out_file) {
     throw "Cannot open file";
   }
   out_file.clear();
-  out_file.write((char *) s, sizeof(*s));
-  this->map[key] = true;
+  out_file.write((char *) &this->map, sizeof(this->map));
   out_file.close();
 }
-bool FileCacheManager::isThereSolution(Problem *p) {
-  return this->map[p->getKey()];
+void FileCacheManager::saveSolution(string problem, string solution) {
+  ofstream out_file{"Solution_" + problem, ios::binary};
+  if (!out_file) {
+    throw "Cannot open file";
+  }
+  out_file.clear();
+  out_file.write((char *) &solution, sizeof(solution));
+  this->map[problem] = true;
+  out_file.close();
 }
-Solution FileCacheManager::getSolution(Problem *p) {
-  Solution s;
-  ifstream input_file("Solution_" + to_string(p->getKey()));
+bool FileCacheManager::isThereSolution(string problem) {
+  return this->map[problem];
+}
+string FileCacheManager::getSolution(string problem) {
+  string s;
+  ifstream input_file("Solution_" + problem);
   if (!input_file) {
     throw "File open error";
   }
