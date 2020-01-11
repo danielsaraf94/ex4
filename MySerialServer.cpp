@@ -33,12 +33,13 @@ void MySerialServer::open(int port, ClientHandler *client_handler) {
 void MySerialServer::start(int socketfd, sockaddr_in address, ClientHandler *client_handler, bool *to_stop) {
   int client_socket;
   struct timeval tv;
-  tv.tv_sec = 2;
+  tv.tv_sec = 120;
   setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv);
   while (!(*to_stop)) {
     client_socket = accept(socketfd, (struct sockaddr *) &address, (socklen_t *) &address);
     if (client_socket == -1) {
       cerr << "error accepting client" << endl;
+      exit(1);
     } else {
       cout << "client connected" << endl;
       client_handler->handleClient(client_socket);
