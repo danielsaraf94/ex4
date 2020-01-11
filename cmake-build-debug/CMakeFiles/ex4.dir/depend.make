@@ -18,9 +18,11 @@ CMakeFiles/ex4.dir/MyTestClientHandler.cpp.o: ../Solver.h
 
 CMakeFiles/ex4.dir/main.cpp.o: ../CacheManager.h
 CMakeFiles/ex4.dir/main.cpp.o: ../ClientHandler.h
+CMakeFiles/ex4.dir/main.cpp.o: ../FileCacheManager.h
 CMakeFiles/ex4.dir/main.cpp.o: ../MySerialServer.h
 CMakeFiles/ex4.dir/main.cpp.o: ../MyTestClientHandler.h
 CMakeFiles/ex4.dir/main.cpp.o: ../ServerSide.h
 CMakeFiles/ex4.dir/main.cpp.o: ../Solver.h
+CMakeFiles/ex4.dir/main.cpp.o: ../StringReverser.h
 CMakeFiles/ex4.dir/main.cpp.o: ../main.cpp
 

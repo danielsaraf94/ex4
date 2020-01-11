@@ -28,6 +28,10 @@ unordered_map
 list
 /home/shlomo/CLionProjects/ex4/list
 
+/home/shlomo/CLionProjects/ex4/MySerialServer.cpp
+MySerialServer.h
+/home/shlomo/CLionProjects/ex4/MySerialServer.h
+
 /home/shlomo/CLionProjects/ex4/MySerialServer.h
 ServerSide.h
 /home/shlomo/CLionProjects/ex4/ServerSide.h
@@ -48,6 +52,8 @@ thread
 
 /home/shlomo/CLionProjects/ex4/MyTestClientHandler.cpp
 cstring
+-
+algorithm
 -
 MyTestClientHandler.h
 /home/shlomo/CLionProjects/ex4/MyTestClientHandler.h
@@ -80,9 +86,21 @@ chrono
 thread
 -
 
+/home/shlomo/CLionProjects/ex4/StringReverser.h
+Solver.h
+/home/shlomo/CLionProjects/ex4/Solver.h
+string
+-
+
 /home/shlomo/CLionProjects/ex4/main.cpp
+ClientHandler.h
+/home/shlomo/CLionProjects/ex4/ClientHandler.h
 MySerialServer.h
 /home/shlomo/CLionProjects/ex4/MySerialServer.h
 MyTestClientHandler.h
 /home/shlomo/CLionProjects/ex4/MyTestClientHandler.h
+FileCacheManager.h
+/home/shlomo/CLionProjects/ex4/FileCacheManager.h
+StringReverser.h
+/home/shlomo/CLionProjects/ex4/StringReverser.h
 

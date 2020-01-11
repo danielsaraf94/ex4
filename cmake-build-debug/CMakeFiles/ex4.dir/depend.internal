@@ -19,8 +19,10 @@ CMakeFiles/ex4.dir/MyTestClientHandler.cpp.o
 CMakeFiles/ex4.dir/main.cpp.o
  /home/shlomo/CLionProjects/ex4/CacheManager.h
  /home/shlomo/CLionProjects/ex4/ClientHandler.h
+ /home/shlomo/CLionProjects/ex4/FileCacheManager.h
  /home/shlomo/CLionProjects/ex4/MySerialServer.h
  /home/shlomo/CLionProjects/ex4/MyTestClientHandler.h
  /home/shlomo/CLionProjects/ex4/ServerSide.h
  /home/shlomo/CLionProjects/ex4/Solver.h
+ /home/shlomo/CLionProjects/ex4/StringReverser.h
  /home/shlomo/CLionProjects/ex4/main.cpp
