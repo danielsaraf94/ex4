@@ -11,9 +11,10 @@
 #include <unistd.h>
 #include <chrono>
 #include <thread>
+using namespace std;
 class Solver {
  public:
-  virtual string solve(string *) = 0;
+  virtual string solve(string) = 0;
 };
 
 #endif //EX4__SOLVER_H_
