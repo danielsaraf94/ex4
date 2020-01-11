@@ -6,6 +6,7 @@
 #define EX4_5__MYSERIALSERVER_H_
 #include "ServerSide.h"
 class MySerialServer : public Server  {
+ public:
   void open(int port){}
   void close(){}
 };

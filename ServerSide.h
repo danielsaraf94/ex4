@@ -6,7 +6,8 @@
 #define EX4_5__SERVERSIDE_H_
 namespace server_side
 {
-Class Server{
+class Server{
+ public:
     virtual void open(int port)=0;
     virtual void close()=0;
 };
