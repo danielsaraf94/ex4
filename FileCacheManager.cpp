@@ -17,7 +17,6 @@ void FileCacheManager::delFromCache(string key) {
   this->cacheMap.erase(key);
   this->currentSize--;
 }
-
 bool FileCacheManager::isThereSolution(string s) {
   return this->boolMap[s];
 }
@@ -27,7 +26,6 @@ void FileCacheManager::checkCache() {
     delFromCache(this->doublyList.back().first);
   }
 }
-
 bool FileCacheManager::saveSolution(string key, string obj) {
   ofstream out_file{key + "_Solution", ios::binary};
   if (!out_file) {

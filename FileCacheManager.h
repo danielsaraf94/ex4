@@ -18,8 +18,8 @@ class FileCacheManager : public CacheManager {
   void checkCache();
   void insert(string,string);
   string readFromFile(string);
-  bool saveSolution(string,string);
  public:
+  bool saveSolution(string,string);
   FileCacheManager();
   bool isThereSolution(string);
   string getSolution(string);
