@@ -4,59 +4,78 @@
 #include <iostream>
 #include <fstream>
 #include "FileCacheManager.h"
+
 FileCacheManager::FileCacheManager() {
-  try{
-    getMapInfo();
-  }catch(...){
-
-  }
+  this->currentSize = 0;
+  this->capacity = 5;
 }
 
-void FileCacheManager:: getMapInfo(){
-  ifstream input_file("Map_Information");
+void FileCacheManager::delFromCache(string key) {
+  typename list<pair<string, string>>::iterator it1 = this->cacheMap[key], it2 = this->cacheMap[key];
+  advance(it2, 1);
+  this->doublyList.erase(it1, it2);
+  this->cacheMap.erase(key);
+  this->currentSize--;
+}
+bool FileCacheManager::isThereSolution(string s) {
+  return this->boolMap[s];
+}
+//check if we are not exceeding
+void FileCacheManager::checkCache() {
+  if (this->capacity < this->currentSize) {
+    delFromCache(this->doublyList.back().first);
+  }
+}
+bool FileCacheManager::saveSolution(string key, string obj) {
+  ofstream out_file{key + "_Solution", ios::binary};
+  if (!out_file) {
+    return false;
+  }
+  out_file.clear();
+  out_file.write((char *) &obj, sizeof(obj));
+  out_file.close();
+  return true;
+}
+void FileCacheManager::insert(string key, string obj) {
+  if (this->cacheMap.count(key)) {
+    delFromCache(key);
+  }
+  if (!saveSolution(key, obj)) {
+    throw "File open error";
+  }
+  pair<string, string> pair{key, obj};
+  this->doublyList.push_front(pair);
+  this->cacheMap[key] = (this->doublyList.begin());
+  this->currentSize++;
+  this->boolMap[key] = true;
+  //check if we are not exceeding
+  checkCache();
+}
+string FileCacheManager::readFromFile(string key) {
+  string obj;
+  ifstream input_file(key + "_" + "Solution");
   if (!input_file) {
     throw "File open error";
   }
-  if (!input_file.read((char *) &this->map, sizeof(this->map))) {
-    throw "Extract Solution error";
+  if (!input_file.read((char *) &obj, sizeof(obj))) {
+    throw "Extract data error";
   }
   input_file.close();
+  return obj;
 }
 
-FileCacheManager::~FileCacheManager() {
-  ofstream out_file{"Map_Information", ios::binary};
-  if (!out_file) {
-    throw "Cannot open file";
+string FileCacheManager::getSolution(string key) {
+  string object;
+  if (this->cacheMap.count(key)) {
+    object = this->cacheMap[key]->second;
+  } else {
+    //read from file
+    try {
+      object = readFromFile(key);
+    } catch (const char *e) {
+      throw e;
+    }
   }
-  out_file.clear();
-  out_file.write((char *) &this->map, sizeof(this->map));
-  out_file.close();
-}
-
-void FileCacheManager::saveSolution(string problem, string solution) {
-  ofstream out_file{"Solution_" + problem, ios::binary};
-  if (!out_file) {
-    throw "Cannot open file";
-  }
-  out_file.clear();
-  out_file.write((char *) &solution, sizeof(solution));
-  this->map[problem] = true;
-  out_file.close();
-}
-
-bool FileCacheManager::isThereSolution(string problem) {
-  return this->map[problem];
-}
-
-string FileCacheManager::getSolution(string problem) {
-  string s;
-  ifstream input_file("Solution_" + problem);
-  if (!input_file) {
-    throw "File open error";
-  }
-  if (!input_file.read((char *) &s, sizeof(s))) {
-    throw "Extract Solution error";
-  }
-  input_file.close();
-  return s;
+  insert(key, object);
+  return object;
 }
