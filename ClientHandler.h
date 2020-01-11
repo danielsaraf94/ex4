@@ -4,10 +4,8 @@
 
 #ifndef EX4_5__CLIENTHANDLER_H_
 #define EX4_5__CLIENTHANDLER_H_
-#include "InputSteam.h"
-#include "OutputStream.h"
 class ClientHandler {
  public:
-  virtual void handleClient(InputSteam*,OutputSteam*) = 0;
+  virtual void handleClient(int) = 0;
 };
 #endif //EX4_5__CLIENTHANDLER_H_

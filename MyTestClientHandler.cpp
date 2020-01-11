@@ -8,6 +8,6 @@ MyTestClientHandler::MyTestClientHandler(CacheManager *c, Solver *s) {
   this->cache_manager = c;
   this->solver = s;
 }
-void MyTestClientHandler::handleClient(InputSteam *input_steam, OutputSteam *output_steam) {
+void MyTestClientHandler::handleClient(int client_socket) {
 
 }

@@ -12,7 +12,7 @@ class MyTestClientHandler : public ClientHandler {
   Solver *solver;
  public:
   MyTestClientHandler(CacheManager *, Solver *);
-  void handleClient(InputSteam*,OutputSteam*;
+  void handleClient(int);
 };
 
 #endif //EX4_5__MYTESTCLIENTHANDLER_H_
