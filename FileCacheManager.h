@@ -9,9 +9,9 @@
 using namespace std;
 class FileCacheManager : public CacheManager {
   unordered_map<string,bool> map;
-  virtual void saveSolution(string,string);
   void getMapInfo();
  public:
+  virtual void saveSolution(string,string);
   FileCacheManager();
   virtual bool isThereSolution(string);
   virtual string getSolution(string);
