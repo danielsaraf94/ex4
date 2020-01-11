@@ -5,9 +5,14 @@
 #ifndef EX4__FILECACHEMANAGER_H_
 #define EX4__FILECACHEMANAGER_H_
 #include "CacheManager.h"
+#include "unordered_map"
+using namespace std;
 class FileCacheManager : public CacheManager {
-  virtual void saveSolution(Problem *, Solution *);
+  int numberOfSolutions;
+  unordered_map<Problem*,int> map;
+  virtual void saveSolution(int, Solution *);
  public:
+  FileCacheManager(){numberOfSolutions=0;};
   virtual bool isThereSolution(Problem *);
   virtual Solution *getSolution(Problem *);
 };
