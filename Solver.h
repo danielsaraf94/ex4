@@ -12,8 +12,10 @@
 #include <chrono>
 #include <thread>
 using namespace std;
+template<typename S,typename P>
 class Solver {
  public:
+  Solver<S,P>(){};
   virtual string solve(string) = 0;
 };
 
