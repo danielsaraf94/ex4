@@ -11,6 +11,7 @@ FileCacheManager::FileCacheManager() {
 
   }
 }
+
 void FileCacheManager:: getMapInfo(){
   ifstream input_file("Map_Information");
   if (!input_file) {
@@ -21,6 +22,7 @@ void FileCacheManager:: getMapInfo(){
   }
   input_file.close();
 }
+
 FileCacheManager::~FileCacheManager() {
   ofstream out_file{"Map_Information", ios::binary};
   if (!out_file) {
@@ -30,6 +32,7 @@ FileCacheManager::~FileCacheManager() {
   out_file.write((char *) &this->map, sizeof(this->map));
   out_file.close();
 }
+
 void FileCacheManager::saveSolution(string problem, string solution) {
   ofstream out_file{"Solution_" + problem, ios::binary};
   if (!out_file) {
@@ -40,9 +43,11 @@ void FileCacheManager::saveSolution(string problem, string solution) {
   this->map[problem] = true;
   out_file.close();
 }
+
 bool FileCacheManager::isThereSolution(string problem) {
   return this->map[problem];
 }
+
 string FileCacheManager::getSolution(string problem) {
   string s;
   ifstream input_file("Solution_" + problem);
