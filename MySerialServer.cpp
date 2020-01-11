@@ -1,5 +1,11 @@
 #include "MySerialServer.h"
-void MySerialServer::open(int port,ClientHandler* client_handler) {
+void MySerialServer::open(int port, ClientHandler *client_handler) {
+  this->socketfd = socket(AF_INET, SOCK_STREAM, 0);
+  if (socketfd == -1) {
+    //error
+    std::cerr << "Could not create a socket" << std::endl;
+    exit(1);
+  }
   //bind socket to IP address
   // we first need to create the sockaddr obj.
   sockaddr_in address; //in means IP4
@@ -20,22 +26,25 @@ void MySerialServer::open(int port,ClientHandler* client_handler) {
   } else {
     cout << "waiting for client to connect" << endl;
   }
-  thread t(start, socketfd, address,client_handler);
+  thread t(start, socketfd, address, client_handler, &to_stop);
   t.detach();
 }
 
-void MySerialServer::start(int socketfd, sockaddr_in address,ClientHandler* client_handler) {
+void MySerialServer::start(int socketfd, sockaddr_in address, ClientHandler *client_handler, bool *to_stop) {
   int client_socket;
-  while(true) {
+  struct timeval tv;
+  tv.tv_sec = 2;
+  setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv);
+  while (!(*to_stop)) {
     client_socket = accept(socketfd, (struct sockaddr *) &address, (socklen_t *) &address);
     if (client_socket == -1) {
       cerr << "error accepting client" << endl;
-      exit(1);
+    } else {
+      cout << "client connected" << endl;
+      client_handler->handleClient(client_socket);
     }
-    cout << "client connected" << endl;
-    client_handler->handleClient(client_socket);
   }
 }
 void MySerialServer::stop() {
-
+  to_stop = true;
 }

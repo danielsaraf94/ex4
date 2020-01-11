@@ -15,10 +15,11 @@
 using namespace std;
 class MySerialServer : public server_side::Server {
   int socketfd;
+  bool to_stop = false;
  public:
   void open(int, ClientHandler *);
   void stop();
-  static void start(int, sockaddr_in, ClientHandler *);
+  static void start(int, sockaddr_in, ClientHandler *,bool* to_close);
 };
 
 #endif //EX4_5__MYSERIALSERVER_H_
