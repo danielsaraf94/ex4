@@ -4,7 +4,10 @@
 
 #include "MyTestClientHandler.h"
 
-MyTestClientHandler::MyTestClientHandler(CacheManager c, Solver s) {
-  this->cm =c;
-  this->solver=s;
+MyTestClientHandler::MyTestClientHandler(CacheManager *c, Solver *s) {
+  this->cache_manager = c;
+  this->solver = s;
+}
+void MyTestClientHandler::handleClient(InputSteam *input_steam, OutputSteam *output_steam) {
+
 }

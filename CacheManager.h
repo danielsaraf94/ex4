@@ -7,12 +7,12 @@
 #include "Problem.h"
 #include "Solution.h"
 class CacheManager {
+  virtual void saveSolution(Problem*,Solution*)=0;
  public:
-  CacheManager(){};
-  virtual bool isThereSolution(&Problem)=0;
-  virtual &Solution getSolution(&Problem)=0;
-  //maybe its should be a private method
-  virtual void saveSolution(&Problem,&Solution)=0;
+  virtual bool isThereSolution(Problem*)=0;
+  virtual Solution* getSolution(Problem*)=0;
+
+
 };
 
 #endif //EX4__CACHEMANAGER_H_

@@ -8,8 +8,7 @@
 #include "Problem.h"
 class Solver {
  public:
- Solver(){};
- virtual &Solution solve(&Problem)=0;
+  virtual Solution *solve(Problem *) = 0;
 };
 
 #endif //EX4__SOLVER_H_
