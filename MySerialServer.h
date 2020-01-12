@@ -14,7 +14,6 @@
 #include <thread>
 using namespace std;
 class MySerialServer : public server_side::Server {
-  int socketfd;
   bool to_stop = false;
  public:
   void open(int, ClientHandler *);
