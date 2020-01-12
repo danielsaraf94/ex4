@@ -8,7 +8,7 @@
 #include "unordered_map"
 #include "list"
 using namespace std;
-class FileCacheManager : public CacheManager {
+class FileCacheManager : public CacheManager<string,string> {
   int currentSize;
   int capacity;
   list<pair<string, string>> doublyList;

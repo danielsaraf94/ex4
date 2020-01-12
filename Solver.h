@@ -12,10 +12,10 @@
 #include <chrono>
 #include <thread>
 using namespace std;
-template<typename S,typename P>
+template<typename P,typename S>
 class Solver {
  public:
-  Solver<S,P>(){};
+  Solver<P,S>(){};
   virtual string solve(string) = 0;
 };
 

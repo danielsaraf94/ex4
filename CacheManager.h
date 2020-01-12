@@ -6,11 +6,13 @@
 #define EX4__CACHEMANAGER_H_
 #include <iostream>
 using namespace std;
+template<typename P,typename S>
 class CacheManager {
  public:
-  virtual bool saveSolution(string, string) = 0;
-  virtual bool isThereSolution(string) = 0;
-  virtual string getSolution(string) = 0;
+  CacheManager<P,S>(){};
+  virtual bool saveSolution(P, S) = 0;
+  virtual bool isThereSolution(P) = 0;
+  virtual S getSolution(P) = 0;
   virtual ~CacheManager() {};
 };
 
