@@ -7,7 +7,7 @@
 #include "Solver.h"
 #include <string>
 using namespace std;
-class StringReverser:public Solver{
+class StringReverser:public Solver<string,string>{
   string solve(string);
 };
 #endif //EX4_5__MYSTRINGSOLVER_H_
