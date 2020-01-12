@@ -5,16 +5,24 @@
 #ifndef EX4_5__STATEPRIORITYQUEUE_H_
 #define EX4_5__STATEPRIORITYQUEUE_H_
 #include "State.h"
+#include "StateComperator.h"
+#include <bits/stdc++.h>
 using namespace std;
 template<typename T>
 class StatePriorityQueue {
+  int count;
  public:
-  int Count;
+  priority_queue<State<T>, vector<State<T>>, StateComperator<T> > pq;
   State<T> poll() {
-    return nullptr;
+    State<T> return_state = pq.top();
+    pq.pop();
+    count--;
+    return return_state;
   }
-  State<T> push() {
-    return nullptr;
+  void push(State<T> s) {
+    count++;
+    pq.push(s);
   }
+  bool isEmpty() { return count == 0; }
 };
 #endif //EX4_5__STATEPRIORITYQUEUE_H_
