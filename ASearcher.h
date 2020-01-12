@@ -13,18 +13,18 @@ using namespace std;
 template<typename T>
 class ASearcher : public Searcher<T>{
  private:
+  StatePriorityQueue<T> open_list;
   int evaluatedNodes;
  protected:
-  StatePriorityQueue open_list;
   State<T> popOpenList(){
     evaluatedNodes++;
     return open_list.poll();
   }
  public:
-  ASearcher<T>():Searcher<T>(){
-    open_list = new StatePriorityQueue();
+  ASearcher(){
+    open_list = new StatePriorityQueue<T>();
     evaluatedNodes=0;
   }
-  int getNumberOfNodeEvaluated(){return this->evaluatedNodes;}
+
 };
 #endif //EX4_5__ASEARCHER_H_

@@ -8,9 +8,12 @@ template<typename T>
 class State {
   T state;
   double cost;
-  State<T>* cameFrom;
+  State<T> *cameFrom;
  public:
-  State<T>(T s) { state = s; }
+  State<T>(T s) {
+    state = s;
+    cost = 1;
+  }
   double getCost() { return cost; }
   void setCost(double d) { cost = d; }
   bool equals(State<T> s) {
