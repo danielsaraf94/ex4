@@ -34,6 +34,7 @@ bool FileCacheManager::saveSolution(string key, string obj) {
   out_file.clear();
   out_file.write((char *) &obj, sizeof(obj));
   out_file.close();
+  this->boolMap[key]=true;
   return true;
 }
 void FileCacheManager::insert(string key, string obj) {
