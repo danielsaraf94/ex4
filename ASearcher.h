@@ -23,16 +23,16 @@ class ASearcher : public Searcher<T> {
   void PushOpenList(State<T> s) {
     open_list.push(s);
   }
- public:
-  ASearcher() {
-    open_list = new StatePriorityQueue<T>();
-    evaluatedNodes = 0;
-  }
   int OpenListSize() {
     return open_list.GetCount();
   }
   bool isEmpty() {
     return open_list.GetCount() == 0;
+  }
+ public:
+  ASearcher() {
+    open_list = new StatePriorityQueue<T>();
+    evaluatedNodes = 0;
   }
   int getNumberOfNodesEvaluated() { return evaluatedNodes; }
   virtual Solution<T> search(Searchable<T>) = 0;
