@@ -10,8 +10,8 @@ template<typename T>
 class Searcher {
  public:
   Searcher<T>() {};
-  virtual Solution<T> Search(Searchable<T>) = 0;
-  virtual int GetNumberOfNodeEvaluated() = 0;
+  virtual Solution<T> search(Searchable<T>) = 0;
+  virtual int getNumberOfNodeEvaluated() = 0;
 };
 
 #endif //EX4__SEARCHER_H_

@@ -13,7 +13,7 @@ using namespace std;
 template<typename T>
 class ASearcher : public Searcher<T>{
  private:
-  StatePriorityQueue<T> open_list;
+  StatePriorityQueue open_list;
   int evaluatedNodes;
  protected:
   State<T> popOpenList(){
@@ -22,7 +22,7 @@ class ASearcher : public Searcher<T>{
   }
  public:
   ASearcher(){
-    open_list = new StatePriorityQueue<T>();
+    open_list = new StatePriorityQueue();
     evaluatedNodes=0;
   }
 
