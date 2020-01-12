@@ -10,7 +10,7 @@
 using namespace std;
 template<typename T>
 class StatePriorityQueue {
-  int count;
+  int count=0;
  public:
   priority_queue<State<T>, vector<State<T>>, StateComperator<T> > pq;
   State<T> poll() {
