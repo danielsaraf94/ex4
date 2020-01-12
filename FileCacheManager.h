@@ -8,16 +8,16 @@
 #include "unordered_map"
 #include "list"
 using namespace std;
-class FileCacheManager : public CacheManager<string,string> {
+class FileCacheManager : public CacheManager<string, string> {
   int currentSize;
   int capacity;
   list<pair<string, string>> doublyList;
   unordered_map<string, typename list<pair<string, string>>::iterator> cacheMap;
-  unordered_map<string,bool> boolMap;
+  unordered_map<string, bool> boolMap;
   void delFromCache(string);
   void checkCache();
   bool printToFile(string key, string obj);
-  string readFromFile(string);
+  string readFromFile(string, string *);
  public:
   FileCacheManager();
   void saveSolution(string, string);

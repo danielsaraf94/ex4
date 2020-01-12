@@ -34,7 +34,7 @@ bool FileCacheManager::printToFile(string key, string obj) {
   out_file.clear();
   out_file.write((char *) &obj, sizeof(obj));
   out_file.close();
-  this->boolMap[key]=true;
+  this->boolMap[key] = true;
   return true;
 }
 void FileCacheManager::saveSolution(string key, string obj) {
@@ -52,17 +52,16 @@ void FileCacheManager::saveSolution(string key, string obj) {
   //check if we are not exceeding
   checkCache();
 }
-string FileCacheManager::readFromFile(string key) {
-  string obj;
-  ifstream input_file(key + "_" + "Solution");
+string FileCacheManager::readFromFile(string key, string *obj) {
+  ifstream input_file(key + "_" + "Solution", ios::in | ios::binary);
   if (!input_file) {
     throw "File open error";
   }
-  if (!input_file.read((char *) &obj, sizeof(obj))) {
+  if (!input_file.read((char *) &*obj, sizeof(*obj))) {
     throw "Extract data error";
   }
   input_file.close();
-  return obj;
+  return *obj;
 }
 
 string FileCacheManager::getSolution(string key) {
@@ -72,7 +71,7 @@ string FileCacheManager::getSolution(string key) {
   } else {
     //read from file
     try {
-      object = readFromFile(key);
+      object = readFromFile(key, &object);
     } catch (const char *e) {
       throw e;
     }
