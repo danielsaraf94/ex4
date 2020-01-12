@@ -8,10 +8,10 @@
 #include "CacheManager.h"
 #include "Solver.h"
 class MyTestClientHandler : public ClientHandler {
-  CacheManager *cache_manager;
-  Solver *solver;
+  CacheManager<string,string> *cache_manager;
+  Solver<string,string> *solver;
  public:
-  MyTestClientHandler(CacheManager *, Solver *);
+  MyTestClientHandler(CacheManager<string,string> *, Solver<string,string> *);
   void handleClient(int);
 };
 

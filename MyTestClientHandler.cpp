@@ -6,7 +6,7 @@
 #include <algorithm>
 #include "MyTestClientHandler.h"
 
-MyTestClientHandler::MyTestClientHandler(CacheManager *c, Solver *s) {
+MyTestClientHandler::MyTestClientHandler(CacheManager<string,string> *c, Solver<string,string> *s) {
   this->cache_manager = c;
   this->solver = s;
 }
@@ -21,7 +21,9 @@ void MyTestClientHandler::handleClient(int client_socket) {
   while (end != str) {
     if (cache_manager->isThereSolution(str)) {
       reverse_str = cache_manager->getSolution(str);
+      cout<< str <<": got it!"<<endl;
     } else {
+      cout<< str <<": didnt got it!"<<endl;
       reverse_str = solver->solve(str);
       cache_manager->saveSolution(str, reverse_str);
     }

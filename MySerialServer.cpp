@@ -31,7 +31,7 @@ void MySerialServer::open(int port, ClientHandler *client_handler) {
     exit(EXIT_FAILURE);
   }
   thread t(start, server_fd, address, client_handler, &to_stop);
-  t.detach();
+  t.join();
 }
 
 void MySerialServer::start(int socketfd, sockaddr_in address, ClientHandler *client_handler, bool *to_stop) {
@@ -43,14 +43,14 @@ void MySerialServer::start(int socketfd, sockaddr_in address, ClientHandler *cli
     FD_ZERO(&rfds);
     FD_SET(socketfd, &rfds);
 
-    tv.tv_sec = 10.0;
+    tv.tv_sec = 120.0;
     tv.tv_usec = 0;
     int addrlen = sizeof(address);
     iResult = select(socketfd + 1, &rfds, (fd_set *) 0, (fd_set *) 0, &tv);
     if (iResult > 0) {
       client_socket = accept(socketfd, (struct sockaddr *) &address, (socklen_t *) &addrlen);
     } else {
-      cout << "Time out.Close the server." << endl;
+      cout << "Time out, server shut down." << endl;
       return;
     }
     if (client_socket == -1) {

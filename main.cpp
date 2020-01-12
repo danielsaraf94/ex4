@@ -11,6 +11,5 @@ int main(int argc,char* argv[]){
   FileCacheManager fcm;
   MyTestClientHandler ch(&fcm,&sr);
   server.open(atoi(argv[1]),&ch);
-  while(true){}
   return 0;
 }
