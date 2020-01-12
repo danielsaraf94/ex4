@@ -3,6 +3,6 @@
 //
 
 #include "BFS.h"
-Solution<T> BFS:: search(Searchable<T>){
-  while(ASearcher::open_list.)
+Solution<T> BFS:: search(Searchable<T>)
+  this->
 }

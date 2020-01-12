@@ -21,10 +21,10 @@ class ASearcher : public Searcher<T>{
     return open_list.poll();
   }
  public:
-  ASearcher(){
+  ASearcher<T>():Searcher<T>(){
     open_list = new StatePriorityQueue();
     evaluatedNodes=0;
   }
-
+  int getNumberOfNodeEvaluated(){return this->evaluatedNodes;}
 };
 #endif //EX4_5__ASEARCHER_H_
