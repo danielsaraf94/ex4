@@ -11,8 +11,8 @@ using namespace std;
 template<typename T>
 class StatePriorityQueue {
   int count=0;
- public:
   priority_queue<State<T>, vector<State<T>>, StateComperator<T> > pq;
+ public:
   State<T> poll() {
     State<T> return_state = pq.top();
     pq.pop();
@@ -22,6 +22,9 @@ class StatePriorityQueue {
   void push(State<T> s) {
     count++;
     pq.push(s);
+  }
+  int GetCount() const {
+    return count;
   }
   bool isEmpty() { return count == 0; }
 };

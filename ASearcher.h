@@ -11,20 +11,30 @@
 
 using namespace std;
 template<typename T>
-class ASearcher : public Searcher<T>{
+class ASearcher : public Searcher<T> {
  private:
   StatePriorityQueue<T> open_list;
   int evaluatedNodes;
  protected:
-  State<T> popOpenList(){
+  State<T> popOpenList() {
     evaluatedNodes++;
     return open_list.poll();
   }
- public:
-  ASearcher(){
-    open_list = new StatePriorityQueue<T>();
-    evaluatedNodes=0;
+  void PushOpenList(State<T> s) {
+    open_list.push(s);
   }
-
+ public:
+  ASearcher() {
+    open_list = new StatePriorityQueue<T>();
+    evaluatedNodes = 0;
+  }
+  int OpenListSize() {
+    return open_list.GetCount();
+  }
+  bool isEmpty() {
+    return open_list.GetCount() == 0;
+  }
+  int getNumberOfNodesEvaluated() { return evaluatedNodes; }
+  virtual Solution<T> search(Searchable<T>) = 0;
 };
 #endif //EX4_5__ASEARCHER_H_
