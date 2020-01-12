@@ -8,10 +8,10 @@
 #include "set"
 using namespace std;
 template<typename T>
-class BFS: public ASearcher<T> {
+class BestFirstSearch: public ASearcher<T> {
   set closed;
  public:
-  BFS<T>():ASearcher<T>(){};
+  BestFirstSearch<T>():ASearcher<T>(){};
   Solution<T> search(Searchable<T>)
 };
 
