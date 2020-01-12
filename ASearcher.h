@@ -13,9 +13,9 @@ using namespace std;
 template<typename T>
 class ASearcher : public Searcher<T>{
  private:
-  StatePriorityQueue open_list;
   int evaluatedNodes;
  protected:
+  StatePriorityQueue open_list;
   State<T> popOpenList(){
     evaluatedNodes++;
     return open_list.poll();
