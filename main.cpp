@@ -9,7 +9,7 @@ int main(int argc,char* argv[]){
   StringReverser sr;
   FileCacheManager fcm;
   MyTestClientHandler ch(&fcm,&sr);
-  server.open(atoi(argv[0]),&ch);
+  server.open(atoi(argv[1]),&ch);
   while(true){}
   return 0;
 }

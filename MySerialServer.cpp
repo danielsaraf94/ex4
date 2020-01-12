@@ -1,49 +1,62 @@
 #include "MySerialServer.h"
 void MySerialServer::open(int port, ClientHandler *client_handler) {
-  this->socketfd = socket(AF_INET, SOCK_STREAM, 0);
-  if (socketfd == -1) {
-    //error
-    std::cerr << "Could not create a socket" << std::endl;
-    exit(1);
+  int server_fd;
+  struct sockaddr_in address;
+  int opt = 1;
+  // Creating socket file descriptor
+  if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+    perror("socket failed");
+    exit(EXIT_FAILURE);
   }
-  //bind socket to IP address
-  // we first need to create the sockaddr obj.
-  sockaddr_in address; //in means IP4
+
+  // Forcefully attaching socket to the port 8080
+  if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
+                 &opt, sizeof(opt))) {
+    perror("setsockopt");
+    exit(EXIT_FAILURE);
+  }
   address.sin_family = AF_INET;
-  address.sin_addr.s_addr = INADDR_ANY; //give me any IP allocated for my machine
+  address.sin_addr.s_addr = INADDR_ANY;
   address.sin_port = htons(port);
-  //we need to convert our number
-  // to a number that the network understands.
-  //the actual bind command
-  if (bind(this->socketfd, (struct sockaddr *) &address, sizeof(address)) == -1) {
-    cerr << "Could not bind the socket to an IP" << endl;
-    exit(1);
+
+  // Forcefully attaching socket to the port 8080
+  if (bind(server_fd, (struct sockaddr *) &address,
+           sizeof(address)) < 0) {
+    perror("bind failed");
+    exit(EXIT_FAILURE);
   }
-  //making socket listen to the port
-  if (listen(this->socketfd, 5) == -1) { //can also set to SOMAXCON (max connections)
-    cerr << "Error during listening command" << endl;
-    exit(1);
-  } else {
-    cout << "waiting for client to connect" << endl;
+  if (listen(server_fd, 3) < 0) {
+    perror("listen");
+    exit(EXIT_FAILURE);
   }
-  thread t(start, socketfd, address, client_handler, &to_stop);
+  thread t(start, server_fd, address, client_handler, &to_stop);
   t.detach();
 }
 
 void MySerialServer::start(int socketfd, sockaddr_in address, ClientHandler *client_handler, bool *to_stop) {
-  int client_socket;
-  struct timeval tv;
-  tv.tv_sec = 120;
-  setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv);
   while (!(*to_stop)) {
-    client_socket = accept(socketfd, (struct sockaddr *) &address, (socklen_t *) &address);
-    if (client_socket == -1) {
-      cerr << "error accepting client" << endl;
-      exit(1);
+    int iResult;
+    int client_socket = 0;
+    struct timeval tv;
+    fd_set rfds;
+    FD_ZERO(&rfds);
+    FD_SET(socketfd, &rfds);
+
+    tv.tv_sec = 10.0;
+    tv.tv_usec = 0;
+    int addrlen = sizeof(address);
+    iResult = select(socketfd + 1, &rfds, (fd_set *) 0, (fd_set *) 0, &tv);
+    if (iResult > 0) {
+      client_socket = accept(socketfd, (struct sockaddr *) &address, (socklen_t *) &addrlen);
     } else {
-      cout << "client connected" << endl;
-      client_handler->handleClient(client_socket);
+      cout << "Time out.Close the server." << endl;
+      return;
     }
+    if (client_socket == -1) {
+      std::cerr << "can't accept client" << std::endl;
+      return;
+    }
+    client_handler->handleClient(client_socket);
   }
 }
 void MySerialServer::stop() {

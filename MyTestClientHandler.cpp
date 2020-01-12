@@ -17,7 +17,8 @@ void MyTestClientHandler::handleClient(int client_socket) {
   // read from client
   read(client_socket, buffer, 1024);
   str = buffer;
-  while (!strcmp("end", buffer)) {
+  string end = "end";
+  while (end != str) {
     if (cache_manager->isThereSolution(str)) {
       reverse_str = cache_manager->getSolution(str);
     } else {
@@ -27,11 +28,13 @@ void MyTestClientHandler::handleClient(int client_socket) {
     char *c = new char[reverse_str.length() + 1];
     strcpy(c, reverse_str.c_str());
     int is_sent = send(client_socket, c, strlen(c), 0);
+    char buffer[1024] = {0};
+    read(client_socket, buffer, 1024);
+    str = buffer;
     delete (c);
     if (is_sent == -1) {
       std::cout << "Error sending message" << std::endl;
     }
-    char buffer[1024] = {0};
-    read(client_socket, buffer, 1024);
   }
+  close(client_socket);
 }
