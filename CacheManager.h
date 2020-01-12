@@ -10,7 +10,7 @@ template<typename P,typename S>
 class CacheManager {
  public:
   CacheManager<P,S>(){};
-  virtual bool printToFile(P, S) = 0;
+  virtual void saveSolution(P, S) = 0;
   virtual bool isThereSolution(P) = 0;
   virtual S getSolution(P) = 0;
   virtual ~CacheManager() {};
