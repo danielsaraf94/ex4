@@ -11,8 +11,7 @@ class State {
   State<T> *cameFrom;
  public:
   State<T>(T s) {
-    state = s;
-    cost = 1;
+    this->state = s;
   }
   double getCost() { return cost; }
   void setCost(double d) { cost = d; }
