@@ -16,11 +16,11 @@ class FileCacheManager : public CacheManager<string,string> {
   unordered_map<string,bool> boolMap;
   void delFromCache(string);
   void checkCache();
-  void insert(string,string);
+  bool printToFile(string key, string obj);
   string readFromFile(string);
  public:
-  bool saveSolution(string,string);
   FileCacheManager();
+  void saveSolution(string, string);
   bool isThereSolution(string);
   string getSolution(string);
 };

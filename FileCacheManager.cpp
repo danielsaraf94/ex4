@@ -26,7 +26,7 @@ void FileCacheManager::checkCache() {
     delFromCache(this->doublyList.back().first);
   }
 }
-bool FileCacheManager::saveSolution(string key, string obj) {
+bool FileCacheManager::printToFile(string key, string obj) {
   ofstream out_file{key + "_Solution", ios::binary};
   if (!out_file) {
     return false;
@@ -37,11 +37,11 @@ bool FileCacheManager::saveSolution(string key, string obj) {
   this->boolMap[key]=true;
   return true;
 }
-void FileCacheManager::insert(string key, string obj) {
+void FileCacheManager::saveSolution(string key, string obj) {
   if (this->cacheMap.count(key)) {
     delFromCache(key);
   }
-  if (!saveSolution(key, obj)) {
+  if (!printToFile(key, obj)) {
     throw "File open error";
   }
   pair<string, string> pair{key, obj};
@@ -77,6 +77,6 @@ string FileCacheManager::getSolution(string key) {
       throw e;
     }
   }
-  insert(key, object);
+  saveSolution(key, object);
   return object;
 }

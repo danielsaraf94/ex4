@@ -25,7 +25,7 @@ void MyTestClientHandler::handleClient(int client_socket) {
     } else {
       cout<< str <<": didnt got it!"<<endl;
       reverse_str = solver->solve(str);
-      cache_manager->saveSolution(str, reverse_str);
+      cache_manager->printToFile(str, reverse_str);
     }
     char *c = new char[reverse_str.length() + 1];
     strcpy(c, reverse_str.c_str());
