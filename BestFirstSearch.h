@@ -8,6 +8,7 @@
 #include "Solution.h"
 #include "State.h"
 #include "set"
+#include "vector"
 #include "list"
 #include "StatePriorityQueue.h"
 using namespace std;
@@ -15,7 +16,19 @@ template<typename T>
 class BestFirstSearch : public Searcher<T> {
   int evaluatedNodes;
   set<State<T>> closed;
-  Solution<T> backTrace();
+  Solution<State<T>> backTrace(State<T> s){
+    vector<State<T>> vec;
+    vec.push_back(s);
+    while(s.getCameFrom()!=NULL){
+      s=*(s.getCameFrom());
+      vec.push_back(s);
+    }
+    vector<State<T>> ret_vec;
+    for(int i = vec.size()-1; i>=0;i--){
+      ret_vec.push_back(vec[i]);
+    }
+    return ret_vec;
+  }
   StatePriorityQueue<T> open_list;
 
   State<T> popOpenList() {
@@ -38,7 +51,7 @@ class BestFirstSearch : public Searcher<T> {
       State<T> n = popOpenList();
       this->closed.insert(n);
       if (s.isGoalState(n)) {
-        return backTrace();
+        return backTrace(*s);
       }
       list<State<T>*> successors = s.getAllPossibleStates(n);
       for (State<T>* state: successors) {

@@ -15,15 +15,18 @@ class StatePriorityQueue {
 //  priority_queue <int, vector<State<T>>, greater<double>> pq;
   vector<State<T>> pq;
   int binarySearch(double cost, int size, int location) {
+    if(size==0){
+      return location;
+    }
     if (size == 1) {
-      if (cost < pq[location].getCost) {
+      if (cost < pq[location].getCost()) {
         return location;
       } else {
         return location + 1;
       }
     }
     int newSize = size / 2;
-    if (cost < pq[location + newSize].getCost) {
+    if (cost < pq[location + newSize].getCost()) {
       return binarySearch(cost, newSize, location);
     } else {
       return binarySearch(cost, size - newSize, location + newSize);
@@ -63,11 +66,18 @@ class StatePriorityQueue {
   }
   void push(State<T> s) {
     int i = binarySearch(s.getCost(), pq.size(), 0);
-    pq.insert(pq.begin() + i);
+    pq.insert(pq.begin() + i,s);
   }
   int GetCount() const {
     return pq.size();
   }
-  bool isEmpty() { return pq.empty(); }
+  bool isEmpty() {
+    return pq.size()==0;
+  }
+  void printQueue(){
+    for(State<T> s : pq){
+      cout<<s.getState()<<": "<<s.getCost()<<endl;
+    }
+  }
 };
 #endif //EX4_5__STATEPRIORITYQUEUE_H_

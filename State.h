@@ -29,6 +29,9 @@ class State {
   void setCameFrom(State<T> *came_from) {
     cameFrom = came_from;
   }
+  State<T>* getCameFrom(){
+    return cameFrom;
+  }
 };
 
 template<typename P>
