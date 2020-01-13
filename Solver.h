@@ -16,7 +16,7 @@ template<typename P,typename S>
 class Solver {
  public:
   Solver<P,S>(){};
-  virtual string solve(string) = 0;
+  virtual S solve(P) = 0;
 };
 
 #endif //EX4__SOLVER_H_

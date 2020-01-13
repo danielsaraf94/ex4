@@ -1,21 +1,31 @@
 // Created by daniels on 11/01/2020.
 
-
+#include "MyClientHandler.h"
 #include <cstring>
 #include <algorithm>
 #include <vector>
-#include "MyClientHandler.h"
 #include <iostream>
 #include <cstdlib>
+#include "MatrixProblem.h"
+#include "Solution.h"
+#include "State.h"
 using namespace std;
-MyClientHandler::MyClientHandler(CacheManager<string, string> *c, Solver<string, string> *s) {
+MyClientHandler::MyClientHandler(CacheManager<string, string> *c, Solver<MatrixProblem, Solution<string>> *s) {
   this->cache_manager = c;
   this->solver = s;
+}
+int MyClientHandler::getNumberOfCols(string line) {
+  int c = 1;
+  for (char ch:line) {
+    if (ch == ',')
+      c++;
+  }
+  return c;
 }
 void MyClientHandler::handleClient(int client_socket) {
   char buffer[1024] = {0};
   string str;
-  string reverse_str;
+  string solve_str;
   // read from client
   read(client_socket, buffer, 1024);
   str = buffer;
@@ -50,39 +60,47 @@ void MyClientHandler::handleClient(int client_socket) {
     line.erase(0, pos + 1);
     matrix[i][j] = stoi(number);
   }
-  for (int i = 0; i < r; i++) {
-    for (int j = 0; j < c; j++) {
-      cout << matrix[i][j] << "  ";
-    }
-    cout << endl;
+  Point start, finish;
+
+  line = from_client[from_client.size() - 2];
+  size_t pos = 0;
+  pos = line.find(",");
+  number = line.substr(0, pos);
+  line.erase(0, pos + 1);
+  start.setX(stoi(number));
+  pos = line.length();
+  number = line.substr(0, pos);
+  line.erase(0, pos + 1);
+  start.setY(stoi(number));
+  line = from_client[from_client.size() - 1];
+  pos = line.find(",");
+  number = line.substr(0, pos);
+  line.erase(0, pos + 1);
+  finish.setX(stoi(number));
+  pos = line.length();
+  number = line.substr(0, pos);
+  line.erase(0, pos + 1);
+  finish.setY(stoi(number));
+  MatrixProblem matrix_problem(matrix, start, finish, r, c);
+  hash < string > hasher;
+  auto hashed = hasher(matrix_problem.toString());
+  string key = to_string(hashed);
+  if (cache_manager->isThereSolution(key)) {
+    solve_str = cache_manager->getSolution(key);
+    cout << key << ": got it!" << endl;
+  } else {
+    cout << key << ": didnt got it!" << endl;
+    solve_str = (solver->solve(matrix_problem)).GetSolutionDescribe();
+    cache_manager->saveSolution(key, solve_str);
+  }
+  char *temp = new char[solve_str.length() + 1];
+  strcpy(temp, solve_str.c_str());
+  int is_sent = send(client_socket, temp, strlen(temp), 0);
+  delete (temp);
+  if (is_sent == -1) {
+    std::cout << "Error sending message" << std::endl;
   }
 
-/* if (cache_manager->isThereSolution(str)) {
-   reverse_str = cache_manager->getSolution(str);
-   cout<< str <<": got it!"<<endl;
- } else {
-   cout<< str <<": didnt got it!"<<endl;
-   reverse_str = solver->solve(str);
-   cache_manager->saveSolution(str, reverse_str);
- }
- char *c = new char[reverse_str.length() + 1];
- strcpy(c, reverse_str.c_str());
- int is_sent = send(client_socket, c, strlen(c), 0);
- char buffer[1024] = {0};
- read(client_socket, buffer, 1024);
- str = buffer;
- delete (c);
- if (is_sent == -1) {
-   std::cout << "Error sending message" << std::endl;
- }*/
   close(client_socket);
 }
 
-int MyClientHandler::getNumberOfCols(string line) {
-  int c = 1;
-  for (char ch:line) {
-    if (ch == ',')
-      c++;
-  }
-  return c;
-}
