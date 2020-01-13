@@ -19,6 +19,10 @@ class StatePriorityQueue {
     auto it = pq.find(s);
     pq.erase(it);
   }
+  double getStateCost(State<T> s){
+    typename std::multiset<State<T>>::iterator it = pq.find(s);
+    return it->getCost();
+  }
   State<T> poll() {
     State<T> return_state = *pq.begin();
     auto it = pq.begin();
