@@ -13,6 +13,7 @@ class MyClientHandler : public ClientHandler {
  public:
   MyClientHandler(CacheManager<string,string> *, Solver<string,string> *);
   void handleClient(int);
+  int getNumberOfCols(string );
 };
 
 #endif //EX4_5__MYTESTCLIENTHANDLER_H_
