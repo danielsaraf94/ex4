@@ -19,7 +19,7 @@ class BreadthFirstSearch : public Searcher<T> {
     while (!queue.isEmpty()) {
       v = &(queue.poll());
       if (searchable.isGoalState(v))
-        return makeSulotion(v);//here we should return solution
+        return backTrace(*v);//here we should return solution
       list = searchable.getAllPossibleStates();
       for (State<T> s : list) {
         if (map.find(s.getState()) == map.end()) {
@@ -30,6 +30,19 @@ class BreadthFirstSearch : public Searcher<T> {
       }
     }
   }
-  Solution<T> makeSulotion(State<T> *v) {}
+    Solution<State<T>> backTrace(State<T> s){
+      vector<State<T>> vec;
+      vec.push_back(s);
+      while(s.getCameFrom()!=NULL){
+        s=*(s.getCameFrom());
+        vec.push_back(s);
+      }
+      vector<State<T>> ret_vec;
+      for(int i = vec.size()-1; i>=0;i--){
+        ret_vec.push_back(vec[i]);
+      }
+      return ret_vec;
+    }
+  }
 };
 #endif //EX4_5__BREADTHFIRSTSEARCH_H_
