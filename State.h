@@ -8,17 +8,21 @@ template<typename T>
 class State {
   T state;
   double cost;
- public:
-  T GetState() const;
- private:
   State<T> *cameFrom;
  public:
-  template<typename P>
-  friend bool operator<(State<P> const &a, State<P> const &b);
+  bool operator<(const State &a) const {
+    return cost < a.cost;
+  }
+  bool operator==(const State &a) const {
+    return (getState() == a.getState());
+  }
+  bool operator!=(const State &a) const{
+    return !(*this == *a);
+  }
   State<T>(T s) {
     this->state = s;
   }
-  double getCost() { return cost; }
+  double getCost() const { return cost; }
   void setCost(double d) { cost = d; }
   bool equals(State<T> s) {
     return state == s.state;
@@ -34,10 +38,6 @@ class State {
   }
 };
 
-template<typename P>
-bool operator<(const State<P> &a, const State<P> &b) {
-  return a.cost < b.cost;
-}
 
 
 #endif //EX4__STATE_H_
