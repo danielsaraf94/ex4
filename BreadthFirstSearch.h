@@ -43,6 +43,5 @@ class BreadthFirstSearch : public Searcher<T> {
       }
       return ret_vec;
     }
-  }
-};
+  };
 #endif //EX4_5__BREADTHFIRSTSEARCH_H_
