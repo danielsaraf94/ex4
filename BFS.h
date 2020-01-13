@@ -7,12 +7,13 @@
 #include "Solution.h"
 #include "set"
 using namespace std;
+/*
 template<typename T>
 class BFS: public ASearcher<T> {
   set closed;
  public:
   BFS<T>():ASearcher<T>(){};
   Solution<T> search(Searchable<T>)
-};
+};*/
 
 #endif //EX4__BFS_H_

@@ -16,14 +16,20 @@ class ASearcher : public Searcher<T> {
   StatePriorityQueue<T> open_list;
   int evaluatedNodes;
  protected:
+  void openRemove(State<T> s){
+    open_list.remove(s);
+  }
+  bool openContaines(State<T> s){
+    return open_list.contain(s);
+  }
   State<T> popOpenList() {
     evaluatedNodes++;
     return open_list.poll();
   }
-  void PushOpenList(State<T> s) {
+  void pushOpenList(State<T> s) {
     open_list.push(s);
   }
-  int OpenListSize() {
+  int openListSize() {
     return open_list.GetCount();
   }
   bool isEmpty() {

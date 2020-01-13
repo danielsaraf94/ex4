@@ -10,22 +10,27 @@
 using namespace std;
 template<typename T>
 class StatePriorityQueue {
-  int count=0;
-  priority_queue<State<T>, vector<State<T>>, StateComperator<T> > pq;
+  multiset<State<T>> pq;
  public:
+  bool contain(State<T> s) {
+    return !(pq.find(s) == pq.end());
+  }
+  void remove(State<T> s) {
+    auto it = pq.find(s);
+    pq.erase(it);
+  }
   State<T> poll() {
-    State<T> return_state = pq.top();
-    pq.pop();
-    count--;
+    State<T> return_state = *pq.begin();
+    auto it = pq.begin();
+    pq.erase(it);
     return return_state;
   }
   void push(State<T> s) {
-    count++;
-    pq.push(s);
+    pq.insert(s);
   }
   int GetCount() const {
-    return count;
+    return pq.size();
   }
-  bool isEmpty() { return count == 0; }
+  bool isEmpty() { return pq.empty(); }
 };
 #endif //EX4_5__STATEPRIORITYQUEUE_H_
