@@ -7,6 +7,7 @@
 #include "StringReverser.h"
 #include "State.h"
 #include "StatePriorityQueue.h"
+#include "Point.h"
 
 using namespace std;
 int main(int argc, char *argv[]) {
@@ -20,7 +21,6 @@ int main(int argc, char *argv[]) {
   s4.setCost(4);
   State<string> s5("dan1");
   s5.setCost(1);
-
   StatePriorityQueue<string> s;
   s.push(s2);
   s.push(s1);
@@ -30,7 +30,12 @@ int main(int argc, char *argv[]) {
   s.printQueue();
   s.remove(s1);
 
- cout<<s.contain(s1);
+ cout<<s.contain(s1)<<endl;
+ Point p;
+ p.setX(90);
+ p.setY(10);
+ cout<<p;
+
 /*
   MySerialServer server;
   StringReverser sr;

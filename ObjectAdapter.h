@@ -4,14 +4,21 @@
 
 #ifndef EX4__OBJECTADAPTER_H_
 #define EX4__OBJECTADAPTER_H_
-template<typename T>
-class ObjectAdapter : public Solver<Problem < MatrixProblem>, Solution<T>>{
-Searcher *searcher;
+#include "Searcher.h"
+#include "Solver.h"
+#include "MatrixProblem.h"
+#include "Searcher.h"
+#include "Searchable.h"
+
+class ObjectAdapter : public Solver<Problem < MatrixProblem>, Solution<string>>{
+Searcher<string> *searcher;
+Searchable<string> *searchable;
 public:
-ObjectAdapter(Searcher *s) {
+ObjectAdapter(Searcher<string> *s) {
   searcher = s;
+
 }
-Solution<T> solve(){
+Solution<string> solve(){
 
 }
 };
