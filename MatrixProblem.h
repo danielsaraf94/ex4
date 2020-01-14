@@ -29,7 +29,6 @@ class MatrixProblem {
   const Point &GetFinish() const {
     return finish;
   }
- public:
   MatrixProblem(int **m, Point s, Point f, int r, int c) {
     this->matrix = m;
     this->start = s;
