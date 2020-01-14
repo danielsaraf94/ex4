@@ -7,27 +7,28 @@
 #include "Searcher.h"
 #include "unordered_map"
 #include "queue"
-template<typename T,typename P>
-class BreadthFirstSearch : public Searcher<T,P> {
+template<typename T>
+class BreadthFirstSearch : public Searcher<T,vector<State<T>>>{
   int num_of_node_evaluated = 0;
  public:
   int getNumberOfNodeEvaluated() { return num_of_node_evaluated; }
-  Solution<P> search(Searchable<T> searchable) {
+  Solution<vector<State<T>>> search(Searchable<T>& searchable) {
     State<T> *v;
     list<State<T>*> list;
     unordered_map<T, bool> map;
-    queue<State<T>> queue;
+    queue<State<T>*> queue;
     map[searchable.getInitialState()->getState()] = true;
-    queue.push(*(searchable.getInitialState()));
-    while (!queue.isEmpty()) {
+    queue.push((searchable.getInitialState()));
+    while (!(queue.empty())) {
       num_of_node_evaluated++;
-      v = &(queue.poll());
+      v = queue.front();
+      queue.pop();
       if (searchable.isGoalState(v))
         return backTrace(*v);//here we should return solution
       list = searchable.getAllPossibleStates(v);
-      for (State<T> s : list) {
-        if (map.find(s.getState()) == map.end()) {
-          map[s.getState()] = true;
+      for (State<T>* s : list) {
+        if (map.find(s->getState()) == map.end()) {
+          map[s->getState()] = true;
           s->setCameFrom(v);
           queue.push(s);
         }
@@ -50,4 +51,25 @@ class BreadthFirstSearch : public Searcher<T,P> {
     return solution;
   }
 };
+namespace std {
+
+template <>
+struct hash<Point>
+{
+  std::size_t operator()(const Point& p) const
+  {
+    using std::size_t;
+    using std::hash;
+    using std::string;
+
+    // Compute individual hash values for first,
+    // second and third and combine them using XOR
+    // and bit shifting:
+
+    return ((hash<int>()(p.getX())
+        ^ (hash<int>()(p.getY()) << 1)) >> 1);
+  }
+};
+
+}
 #endif //EX4_5__BREADTHFIRSTSEARCH_H_

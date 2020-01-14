@@ -81,7 +81,6 @@ void MyClientHandler::handleClient(int client_socket) {
   }
 
   Point start, finish;
-
   line = from_client[from_client.size() - 2];
   size_t pos = 0;
   pos = line.find(",");

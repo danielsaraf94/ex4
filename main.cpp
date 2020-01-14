@@ -14,9 +14,8 @@
 #include "BestFirstSearch.h"
 using namespace std;
 int main(int argc, char *argv[]) {
-
   MyParallelServer server;
-  ObjectAdapter sr(new BestFirstSearch<Point>());
+  ObjectAdapter sr(new BreadthFirstSearch<Point>());
   FileCacheManager fcm;
   MyClientHandler ch(&fcm, &sr);
   server.open(atoi(argv[1]), &ch);
