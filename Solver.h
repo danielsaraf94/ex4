@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <chrono>
 #include <thread>
+#include "Problem.h"
+#include "Solution.h"
 using namespace std;
 template<typename P,typename S>
 class Solver {

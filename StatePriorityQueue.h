@@ -14,8 +14,9 @@ template<typename T>
 class StatePriorityQueue {
 //  priority_queue <int, vector<State<T>>, greater<double>> pq;
   vector<State<T>> pq;
+  map<T, double> costOfState;
   int binarySearch(double cost, int size, int location) {
-    if(size==0){
+    if (size == 0) {
       return location;
     }
     if (size == 1) {
@@ -33,50 +34,51 @@ class StatePriorityQueue {
     }
   }
  public:
-  int contain(State<T> s) {
-    int i;
-    for (i = 0; i < pq.size(); i++) {
-      if (s.getState() == pq[i].getState()) {
-        return i;
-      }
+  bool contain(State<T> s) {
+    if (this->costOfState.find(s.getState()) == this->costOfState.end()) {
+      return false;
     }
-    return -1;
+    return true;
   }
   void remove(State<T> s) {
-    int i = contain(s);
-    if (i == -1) {
+    if (!contain(s)) {
       throw "The state does not exist";
     }
-    pq.erase(pq.begin() + i);
+    pq.erase(pq.begin() + this->costOfState[s.getState()]);
+    this->costOfState.erase(s.getState());
   }
   double getStateCost(State<T> s) {
-    int i = contain(s);
-    if (i == -1) {
+    if (!contain(s)) {
       throw "The state does not exist";
     }
-    return this->pq[i].getCost();
+    return this->pq[this->costOfState[s.getState()]];
   }
   State<T> poll() {
     if (pq.size() == 0) {
       throw "The queue is empty";
     }
     State<T> s = pq[0];
+    this->costOfState.erase(s.getState());
     pq.erase(pq.begin());
     return s;
   }
   void push(State<T> s) {
     int i = binarySearch(s.getCost(), pq.size(), 0);
-    pq.insert(pq.begin() + i,s);
+    if (contain(s)) {
+      remove(s);
+    }
+    this->costOfState[s.getState()] = s.getCost();
+    pq.insert(pq.begin() + i, s);
   }
   int GetCount() const {
     return pq.size();
   }
   bool isEmpty() {
-    return pq.size()==0;
+    return pq.size() == 0;
   }
-  void printQueue(){
-    for(State<T> s : pq){
-      cout<<s.getState()<<": "<<s.getCost()<<endl;
+  void printQueue() {
+    for (State<T> s : pq) {
+      cout << s.getState() << ": " << s.getCost() << endl;
     }
   }
 };
