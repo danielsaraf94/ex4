@@ -27,13 +27,14 @@ void FileCacheManager::checkCache() {
   }
 }
 bool FileCacheManager::printToFile(string key, string obj) {
-  ofstream out_file{key + "_Solution", ios::binary};
-  if (!out_file) {
+  ofstream outfile("Solution_" + key + ".txt");
+  if (!outfile) {
     return false;
   }
-  out_file.clear();
-  out_file.write((char *) &obj, sizeof(obj));
-  out_file.close();
+  outfile.clear();
+  outfile << obj << endl;
+  outfile.close();
+
   this->boolMap[key] = true;
   return true;
 }
@@ -52,16 +53,18 @@ void FileCacheManager::saveSolution(string key, string obj) {
   //check if we are not exceeding
   checkCache();
 }
-string FileCacheManager::readFromFile(string key, string *obj) {
-  ifstream input_file(key + "_" + "Solution", ios::in | ios::binary);
-  if (!input_file) {
-    throw "File open error";
-  }
-  if (!input_file.read((char *) &*obj, sizeof(*obj))) {
-    throw "Extract data error";
-  }
-  input_file.close();
-  return *obj;
+string FileCacheManager::readFromFile(string key) {
+  string line;
+  string all_file = "";
+  ifstream input_file("Solution_" + key + ".txt");
+  if (input_file.is_open()) {
+    while (getline(input_file, line)) {
+      all_file += line;
+    }
+    input_file.close();
+  } else cout << "Unable to open file";
+
+  return all_file;
 }
 
 string FileCacheManager::getSolution(string key) {
@@ -71,7 +74,7 @@ string FileCacheManager::getSolution(string key) {
   } else {
     //read from file
     try {
-      object = readFromFile(key, &object);
+      object = readFromFile(key);
     } catch (const char *e) {
       throw e;
     }

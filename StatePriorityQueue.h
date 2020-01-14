@@ -5,7 +5,6 @@
 #ifndef EX4_5__STATEPRIORITYQUEUE_H_
 #define EX4_5__STATEPRIORITYQUEUE_H_
 #include "State.h"
-#include "StateComperator.h"
 #include <bits/stdc++.h>
 #include "queue"
 #include "vector"

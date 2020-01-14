@@ -17,7 +17,7 @@ class FileCacheManager : public CacheManager<string, string> {
   void delFromCache(string);
   void checkCache();
   bool printToFile(string key, string obj);
-  string readFromFile(string, string *);
+  string readFromFile(string);
  public:
   FileCacheManager();
   void saveSolution(string, string);
