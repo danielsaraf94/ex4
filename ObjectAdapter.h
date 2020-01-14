@@ -18,7 +18,7 @@ ObjectAdapter(Searcher<string> *s) {
   searcher = s;
 
 }
-Solution<string> solve(){
+Solution<string> solve(Problem<MatrixProblem> p){
 
 }
 };
