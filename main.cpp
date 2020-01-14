@@ -1,6 +1,4 @@
 //
-#include "ClientHandler.h"
-#include "MySerialServer.h"
 #include "MyClientHandler.h"
 #include "MyTestClientHandler.h"
 #include "FileCacheManager.h"
@@ -15,7 +13,7 @@
 using namespace std;
 int main(int argc, char *argv[]) {
   MyParallelServer server;
-  ObjectAdapter sr(new BreadthFirstSearch<Point>());
+  ObjectAdapter sr(new BestFirstSearch<Point>());
   FileCacheManager fcm;
   MyClientHandler ch(&fcm, &sr);
   server.open(atoi(argv[1]), &ch);

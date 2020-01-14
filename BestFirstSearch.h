@@ -15,6 +15,7 @@ using namespace std;
 template<typename T>
 class BestFirstSearch : public Searcher<T,vector<State<T>>> {
   int evaluatedNodes;
+  StatePriorityQueue<T> open_list;
   set<State<T>> closed;
   Solution<vector<State<T>>> backTrace(State<T> s){
     vector<State<T>> vec;
@@ -31,7 +32,7 @@ class BestFirstSearch : public Searcher<T,vector<State<T>>> {
     solution.SetSolutionDescribe(ret_vec);
     return solution;
   }
-  StatePriorityQueue<T> open_list;
+
 
   State<T> popOpenList() {
     evaluatedNodes++;
@@ -51,10 +52,10 @@ class BestFirstSearch : public Searcher<T,vector<State<T>>> {
   Solution<vector<State<T>>> search(Searchable<T>& s) {
     this->open_list.push(*(s.getInitialState()));
     while (!this->open_list.isEmpty()) {
-      State<T> n = popOpenList();
-      this->closed.insert(n);
+      State<T>* n = new State<T>(popOpenList());
+      this->closed.insert(*n);
       if (s.isGoalState(n)) {
-        return backTrace(*s);
+        return backTrace(*n);
       }
       list<State<T>*> successors = s.getAllPossibleStates(n);
       for (State<T>* state: successors) {
@@ -63,7 +64,7 @@ class BestFirstSearch : public Searcher<T,vector<State<T>>> {
         } else if (this->open_list.contain(*state)) {
           if (state->getCost()<this->open_list.getStateCost(*state)){
             this->open_list.remove(*state);
-            this->open_list.push(state);
+            this->open_list.push(*state);
           }
         }
       }

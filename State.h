@@ -22,6 +22,9 @@ class State {
   State<T>(T s) {
     this->state = s;
   }
+  State<T>(){
+
+  }
   double getCost() const { return cost; }
   void setCost(double d) { cost = d; }
   bool equals(State<T> s) {

@@ -11,9 +11,8 @@
 using namespace std;
 template<typename T>
 class StatePriorityQueue {
-//  priority_queue <int, vector<State<T>>, greater<double>> pq;
   vector<State<T>> pq;
-  map<T, double> costOfState;
+  map<State<T>, double> costOfState;
   int binarySearch(double cost, int size, int location) {
     if (size == 0) {
       return location;
@@ -50,7 +49,7 @@ class StatePriorityQueue {
     if (!contain(s)) {
       throw "The state does not exist";
     }
-    return this->pq[this->costOfState[s.getState()]];
+    return this->costOfState[s];
   }
   State<T> poll() {
     if (pq.size() == 0) {
@@ -66,7 +65,7 @@ class StatePriorityQueue {
     if (contain(s)) {
       remove(s);
     }
-    this->costOfState[s.getState()] = s.getCost();
+    this->costOfState[s] = s.getCost();
     pq.insert(pq.begin() + i, s);
   }
   int GetCount() const {

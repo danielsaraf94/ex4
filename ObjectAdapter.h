@@ -34,22 +34,25 @@ class ObjectAdapter : public Solver<Problem<MatrixProblem>, Solution<string>> {
       int y2 = vec[i + 1].getState().getY();
       double cost = vec[i+1].getCost();
       if (x > x2) {
-        str+="Down ";
+        str+="Up ";
       }
       if (x < x2) {
-        str += "Up ";
+        str += "Down ";
       }
       if(y<y2){
-        str+="Left ";
-      }
-      if(y>y2){
         str+="Right ";
       }
-      str+="("+to_string(cost)+")";
+      if(y>y2){
+        str+="Left ";
+      }
+      str+="("+to_string((int)cost)+")";
       if(i!=vec.size()-2){
         str+=", ";
       }
     }
+    Solution<string> solution;
+    solution.SetSolutionDescribe(str);
+    return solution;
   }
 };
 
