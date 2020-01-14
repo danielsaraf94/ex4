@@ -9,10 +9,10 @@ class Problem {
  private:
   T problem_describe;
  public:
-  T GetSolutionDescribe() const {
+  T GetProblemDescribe() const {
     return this->problem_describe;
   }
-  void SetSolutionDescribe(T solution_describe) {
+  void SetProblemDescribe(T solution_describe) {
     this->problem_describe = solution_describe;
   }
 };
