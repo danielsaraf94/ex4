@@ -12,6 +12,23 @@ class MatrixProblem {
   int rows_num;
   int cols_num;
   Point start;
+ public:
+  int **GetMatrix() const {
+    return matrix;
+  }
+  int GetRowsNum() const {
+    return rows_num;
+  }
+  int GetColsNum() const {
+    return cols_num;
+  }
+  const Point &GetStart() const {
+    return start;
+  }
+  const Point &GetFinish() const {
+    return finish;
+  }
+ private:
   Point finish;
  public:
   MatrixProblem(int **m, Point s, Point f, int r, int c) {
