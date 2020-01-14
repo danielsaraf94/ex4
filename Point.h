@@ -9,10 +9,15 @@ using namespace std;
 class Point{
   int x,y;
  public:
+  Point(){};
+  Point(int,int);
   int getX() const;
   void setX(int x);
   int getY() const;
   void setY(int y);
+  bool operator==(const Point &a) const {
+    return(x==a.getX()&&y==a.getY());
+  }
   friend ostream& operator<<(std::ostream& os, Point const& p);
 };
 

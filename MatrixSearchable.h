@@ -5,11 +5,16 @@
 #ifndef EX4__MATRIXSEARCHABLE_H_
 #define EX4__MATRIXSEARCHABLE_H_
 #include "Searchable.h"
-class MatrixSearchable:public Searchable<int> {
+#include "Point.h"
+#include "list"
+#include "MatrixProblem.h"
+class MatrixSearchable:public Searchable<Point> {
+  MatrixProblem* matrix_problem;
  public:
-  State<int>* getInitialState();
-  bool isGoalState(State<int>* s);
-  list<State<int>*> getAllPossibleStates(State<int>* s);
+  MatrixSearchable(MatrixProblem*);
+  State<Point>* getInitialState();
+  bool isGoalState(State<Point>* s);
+  list<State<Point>*> getAllPossibleStates(State<Point>* s);
 };
 
 #endif //EX4__MATRIXSEARCHABLE_H_

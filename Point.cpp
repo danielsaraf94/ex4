@@ -20,3 +20,7 @@ int Point:: getY() const {
 void Point:: setY(int y) {
   Point::y = y;
 }
+Point::Point(int x1, int y1) {
+  this->x=x1;
+  this->y=y1;
+}

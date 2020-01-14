@@ -39,7 +39,9 @@ class MatrixProblem {
     this->rows_num = r;
     this->cols_num = c;
   }
-
+  int getValuebyIndex(int x,int y){
+    return this->matrix[x][y];
+  }
   string toString() {
     char buffer[2048];
     strcat(buffer, to_string(start.getX()).c_str());

@@ -9,18 +9,20 @@
 #include "MatrixProblem.h"
 #include "Searcher.h"
 #include "Searchable.h"
+#include "MatrixSearchable.h"
 
-class ObjectAdapter : public Solver<Problem<MatrixProblem>, Solution<string>>{
-Searcher<string> *searcher;
-Searchable<string> *searchable;
-public:
-  ObjectAdapter(){}
-ObjectAdapter(Searcher<string> *s) {
-  searcher = s;
-}
-Solution<string> solve(Problem<MatrixProblem> p){
-
-}
+class ObjectAdapter : public Solver<Problem<MatrixProblem>, Solution<vector<State<Point>>>> {
+    Searcher<State<Point>>* searcher;
+  MatrixSearchable *searchable;
+ public:
+  ObjectAdapter(Searcher<State<Point>>*s) {
+    searcher = s;
+  }
+  Solution<vector<State<Point>>> solve(Problem<MatrixProblem> p) {
+    MatrixProblem* m = new MatrixProblem(p.GetProblemDescribe());
+    this->searchable = new MatrixSearchable(m);
+    return this->searcher->search(*(this->searchable));
+  }
 };
 
 #endif //EX4__OBJECTADAPTER_H_

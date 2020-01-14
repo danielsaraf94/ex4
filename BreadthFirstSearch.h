@@ -30,7 +30,7 @@ class BreadthFirstSearch : public Searcher<T> {
       }
     }
   }
-    Solution<State<T>> backTrace(State<T> s){
+    Solution<vector<State<T>>> backTrace(State<T> s){
       vector<State<T>> vec;
       vec.push_back(s);
       while(s.getCameFrom()!=NULL){
@@ -41,7 +41,9 @@ class BreadthFirstSearch : public Searcher<T> {
       for(int i = vec.size()-1; i>=0;i--){
         ret_vec.push_back(vec[i]);
       }
-      return ret_vec;
+      Solution<vector<State<T>>> solution;
+      solution.SetSolutionDescribe(ret_vec);
+      return solution;
     }
   };
 #endif //EX4_5__BREADTHFIRSTSEARCH_H_

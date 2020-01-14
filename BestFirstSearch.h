@@ -13,10 +13,10 @@
 #include "StatePriorityQueue.h"
 using namespace std;
 template<typename T>
-class BestFirstSearch : public Searcher<T> {
+class BestFirstSearch : public Searcher<State<T>> {
   int evaluatedNodes;
   set<State<T>> closed;
-  Solution<State<T>> backTrace(State<T> s){
+  Solution<vector<State<T>>> backTrace(State<T> s){
     vector<State<T>> vec;
     vec.push_back(s);
     while(s.getCameFrom()!=NULL){
@@ -27,7 +27,9 @@ class BestFirstSearch : public Searcher<T> {
     for(int i = vec.size()-1; i>=0;i--){
       ret_vec.push_back(vec[i]);
     }
-    return ret_vec;
+    Solution<vector<State<T>>> solution;
+    solution.SetSolutionDescribe(ret_vec);
+    return solution;
   }
   StatePriorityQueue<T> open_list;
 
