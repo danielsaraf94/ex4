@@ -2,8 +2,8 @@
 // Created by shlomo on 12/01/2020.
 //
 
-#ifndef EX4__BFS_H_
-#define EX4__BFS_H_
+#ifndef EX4_BFS_H
+#define EX4_BFS_H
 #include "Searcher.h"
 #include "Solution.h"
 #include "State.h"
@@ -13,19 +13,19 @@
 #include "StatePriorityQueue.h"
 using namespace std;
 template<typename T>
-class BestFirstSearch : public Searcher<T,vector<State<T>>> {
+class BestFirstSearch : public Searcher<T, vector<State<T>>> {
   int evaluatedNodes;
   StatePriorityQueue<T> open_list;
   set<State<T>> closed;
-  Solution<vector<State<T>>> backTrace(State<T> s){
+  Solution<vector<State<T>>> backTrace(State<T> s) {
     vector<State<T>> vec;
     vec.push_back(s);
-    while(s.getCameFrom()!=NULL){
-      s=*(s.getCameFrom());
+    while (s.getCameFrom() != NULL) {
+      s = *(s.getCameFrom());
       vec.push_back(s);
     }
     vector<State<T>> ret_vec;
-    for(int i = vec.size()-1; i>=0;i--){
+    for (int i = vec.size() - 1; i >= 0; i--) {
       ret_vec.push_back(vec[i]);
     }
     Solution<vector<State<T>>> solution;
@@ -33,14 +33,13 @@ class BestFirstSearch : public Searcher<T,vector<State<T>>> {
     return solution;
   }
 
-
   State<T> popOpenList() {
     evaluatedNodes++;
     return open_list.poll();
   }
  public:
 
-  BestFirstSearch<T>() : Searcher<T,vector<State<T>>>() {
+  BestFirstSearch<T>() : Searcher<T, vector<State<T>>>() {
     this->evaluatedNodes = 0;
     open_list = StatePriorityQueue<T>();
   }
@@ -49,27 +48,29 @@ class BestFirstSearch : public Searcher<T,vector<State<T>>> {
     return evaluatedNodes;
   }
 
-  Solution<vector<State<T>>> search(Searchable<T>& s) {
-    this->open_list.push(*(s.getInitialState()));
-    while (!this->open_list.isEmpty()) {
-      State<T>* n = new State<T>(popOpenList());
-      this->closed.insert(*n);
+  Solution<vector<State<T>>> search(Searchable<T> &s) {
+    unordered_map<T, bool> map;
+    open_list.push(*(s.getInitialState()));
+    while (!open_list.isEmpty()) {
+      evaluatedNodes++;
+      State<T> *n = new State<T>(open_list.poll());
+      closed.insert(*n);
+      map[n->getState()]=true;
       if (s.isGoalState(n)) {
         return backTrace(*n);
       }
-      list<State<T>*> successors = s.getAllPossibleStates(n);
-      for (State<T>* state: successors) {
-        if (!closed.count(*state) && !this->open_list.contain(*state)) {
-          this->open_list.push(*state);
-        } else if (this->open_list.contain(*state)) {
-          if (state->getCost()<this->open_list.getStateCost(*state)){
-            this->open_list.remove(*state);
-            this->open_list.push(*state);
-          }
+      list<State<T> *> successors = s.getAllPossibleStates(n);
+      for (State<T> *state: successors) {
+        if (map.find(state->getState()) == map.end() && !open_list.contain(*state)) {
+          open_list.push(*state);
+        } else if (state->getCost() < open_list.getStateCost(*state)) {
+          if (open_list.contain(*state))
+            open_list.remove(*state);
+          open_list.push(*state);
         }
       }
     }
   }
 };
 
-#endif //EX4__BFS_H_
+#endif //EX4_BFS_H
