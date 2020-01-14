@@ -5,7 +5,8 @@
 #ifndef EX4_5__MATRIXPROBLEM_H_
 #define EX4_5__MATRIXPROBLEM_H_
 #include "Point.h"
-#include <string>
+#include <cstring>
+
 using namespace std;
 class MatrixProblem {
   int **matrix;

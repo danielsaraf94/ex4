@@ -38,16 +38,17 @@ class BestFirstSearch : public Searcher<T,vector<State<T>>> {
     return open_list.poll();
   }
  public:
+
   BestFirstSearch<T>() : Searcher<T,vector<State<T>>>() {
     this->evaluatedNodes = 0;
-    open_list = new StatePriorityQueue<T>();
+    open_list = StatePriorityQueue<T>();
   }
 
-  int getNumberOfNodesEvaluated() {
+  int getNumberOfNodeEvaluated() {
     return evaluatedNodes;
   }
 
-  Solution<vector<State<T>>> search(Searchable<T> s) {
+  Solution<vector<State<T>>> search(Searchable<T>& s) {
     this->open_list.push(*(s.getInitialState()));
     while (!this->open_list.isEmpty()) {
       State<T> n = popOpenList();
