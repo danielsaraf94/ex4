@@ -12,7 +12,7 @@ using namespace std;
 template<typename T>
 class StatePriorityQueue {
   vector<State<T>> pq;
-  map<State<T>, double> costOfState;
+  map<T, double> costOfState;
   int binarySearch(double cost, int size, int location) {
     if (size == 0) {
       return location;
@@ -31,6 +31,15 @@ class StatePriorityQueue {
       return binarySearch(cost, size - newSize, location + newSize);
     }
   }
+  int find(State<T> s){
+    int i;
+    for(i=0;i<pq.size();i++){
+      if(pq[i].getState()==s.getState()){
+        return i;
+      }
+    }
+    return -1;
+  }
  public:
   bool contain(State<T> s) {
     if (this->costOfState.find(s.getState()) == this->costOfState.end()) {
@@ -42,14 +51,15 @@ class StatePriorityQueue {
     if (!contain(s)) {
       throw "The state does not exist";
     }
-    pq.erase(pq.begin() + this->costOfState[s.getState()]);
+    int i = find(s);
+    pq.erase(pq.begin()+i);
     this->costOfState.erase(s.getState());
   }
   double getStateCost(State<T> s) {
     if (!contain(s)) {
       throw "The state does not exist";
     }
-    return this->costOfState[s];
+    return this->costOfState[s.getState()];
   }
   State<T> poll() {
     if (pq.size() == 0) {
@@ -65,7 +75,7 @@ class StatePriorityQueue {
     if (contain(s)) {
       remove(s);
     }
-    this->costOfState[s] = s.getCost();
+    this->costOfState[s.getState()] = s.getCost();
     pq.insert(pq.begin() + i, s);
   }
   int GetCount() const {

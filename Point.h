@@ -18,6 +18,9 @@ class Point{
   bool operator==(const Point &a) const {
     return(x==a.getX()&&y==a.getY());
   }
+  bool operator<(const Point &a) const {
+    return ((x+y)<(a.getX()+a.getY()));
+  }
   friend ostream& operator<<(std::ostream& os, Point const& p);
 };
 
