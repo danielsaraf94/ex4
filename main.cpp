@@ -8,9 +8,11 @@
 #include "State.h"
 #include "StatePriorityQueue.h"
 #include "Point.h"
+#include "ObjectAdapter.h"
 
 using namespace std;
 int main(int argc, char *argv[]) {
+  /*
   State<string> s1("1");
   s1.setCost(5);
   State<string> s2("2");
@@ -36,12 +38,11 @@ int main(int argc, char *argv[]) {
  p.setY(10);
  cout<<p;
 
-/*
+*/
   MySerialServer server;
-  StringReverser sr;
+  ObjectAdapter sr;
   FileCacheManager fcm;
-  MyClientHandler ch(&fcm,&sr);
-  server.open(atoi(argv[1]),&ch);
-  */
+  MyClientHandler ch(&fcm, &sr);
+  server.open(atoi(argv[1]), &ch);
   return 0;
 }

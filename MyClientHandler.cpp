@@ -10,7 +10,7 @@
 #include "Solution.h"
 #include "State.h"
 using namespace std;
-MyClientHandler::MyClientHandler(CacheManager<string, string> *c, Solver<MatrixProblem, Solution<string>> *s) {
+MyClientHandler::MyClientHandler(CacheManager<string, string> *c, Solver<Problem<MatrixProblem>, Solution<string>> *s) {
   this->cache_manager = c;
   this->solver = s;
 }
@@ -23,21 +23,34 @@ int MyClientHandler::getNumberOfCols(string line) {
   return c;
 }
 void MyClientHandler::handleClient(int client_socket) {
+  char all_matrix[5000] = {0};
   char buffer[1024] = {0};
+  vector<string> from_client;
   string str;
   string solve_str;
   // read from client
   read(client_socket, buffer, 1024);
   str = buffer;
+  strcat(all_matrix, buffer);
   string end = "end";
-  vector<string> from_client;
   while (end != str) {
     cout << str << endl;
-    from_client.insert(from_client.end(), str);
     char buffer[1024] = {0};
     read(client_socket, buffer, 1024);
+    strcat(all_matrix, buffer);
     str = buffer;
   }
+  int i = 0;
+  while (all_matrix[i] != 'e') {
+    string temp = "";
+    while (all_matrix[i] != '\n') {
+      temp += all_matrix[i];
+      i++;
+    }
+    i++;
+    from_client.insert(from_client.end(), temp);
+  }
+
   string number, line;
   int r = (int) from_client.size() - 2;
   int c = getNumberOfCols(from_client[0]);
@@ -60,6 +73,13 @@ void MyClientHandler::handleClient(int client_socket) {
     line.erase(0, pos + 1);
     matrix[i][j] = stoi(number);
   }
+  for (int i = 0; i < r; i++) {
+    for (int j = 0; j < c; j++) {
+      cout << matrix[i][j]<<" ";
+    }
+    cout << endl;
+  }
+
   Point start, finish;
 
   line = from_client[from_client.size() - 2];
@@ -90,7 +110,8 @@ void MyClientHandler::handleClient(int client_socket) {
     cout << key << ": got it!" << endl;
   } else {
     cout << key << ": didnt got it!" << endl;
-    solve_str = (solver->solve(matrix_problem)).GetSolutionDescribe();
+    auto *problem = new Problem<MatrixProblem>(matrix_problem);
+    solve_str = (solver->solve(*problem)).GetSolutionDescribe();
     cache_manager->saveSolution(key, solve_str);
   }
   char *temp = new char[solve_str.length() + 1];

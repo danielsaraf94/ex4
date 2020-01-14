@@ -12,7 +12,6 @@ class MatrixProblem {
   int rows_num;
   int cols_num;
   Point start;
-  Point finish;
  public:
   int **GetMatrix() const {
     return matrix;
@@ -29,6 +28,10 @@ class MatrixProblem {
   const Point &GetFinish() const {
     return finish;
   }
+ private:
+  Point finish;
+ public:
+  MatrixProblem(){}
   MatrixProblem(int **m, Point s, Point f, int r, int c) {
     this->matrix = m;
     this->start = s;
@@ -36,6 +39,7 @@ class MatrixProblem {
     this->rows_num = r;
     this->cols_num = c;
   }
+
   string toString() {
     char buffer[2048];
     strcat(buffer, to_string(start.getX()).c_str());

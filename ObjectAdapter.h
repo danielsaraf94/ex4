@@ -10,13 +10,13 @@
 #include "Searcher.h"
 #include "Searchable.h"
 
-class ObjectAdapter : public Solver<Problem < MatrixProblem>, Solution<string>>{
+class ObjectAdapter : public Solver<Problem<MatrixProblem>, Solution<string>>{
 Searcher<string> *searcher;
 Searchable<string> *searchable;
 public:
+  ObjectAdapter(){}
 ObjectAdapter(Searcher<string> *s) {
   searcher = s;
-
 }
 Solution<string> solve(Problem<MatrixProblem> p){
 

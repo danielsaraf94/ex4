@@ -17,9 +17,9 @@
 #include "State.h"
 class MyClientHandler : public ClientHandler {
   CacheManager<string, string> *cache_manager;
-  Solver<MatrixProblem, Solution<string>> *solver;
+  Solver<Problem<MatrixProblem>, Solution<string>> *solver;
  public:
-  MyClientHandler(CacheManager<string, string> *c, Solver<MatrixProblem, Solution<string>> *s);
+  MyClientHandler(CacheManager<string, string> *c,  Solver<Problem<MatrixProblem>, Solution<string>> *s);
   void handleClient(int);
   int getNumberOfCols(string);
 };
