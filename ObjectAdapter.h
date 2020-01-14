@@ -12,10 +12,10 @@
 #include "MatrixSearchable.h"
 
 class ObjectAdapter : public Solver<Problem<MatrixProblem>, Solution<vector<State<Point>>>> {
-    Searcher<State<Point>>* searcher;
+    Searcher<Point,vector<State<Point>>>* searcher;
   MatrixSearchable *searchable;
  public:
-  ObjectAdapter(Searcher<State<Point>>*s) {
+  ObjectAdapter(Searcher<Point,vector<State<Point>>> *s) {
     searcher = s;
   }
   ObjectAdapter(){};
