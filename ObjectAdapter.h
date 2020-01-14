@@ -18,6 +18,7 @@ class ObjectAdapter : public Solver<Problem<MatrixProblem>, Solution<vector<Stat
   ObjectAdapter(Searcher<State<Point>>*s) {
     searcher = s;
   }
+  ObjectAdapter(){};
   Solution<vector<State<Point>>> solve(Problem<MatrixProblem> p) {
     MatrixProblem* m = new MatrixProblem(p.GetProblemDescribe());
     this->searchable = new MatrixSearchable(m);

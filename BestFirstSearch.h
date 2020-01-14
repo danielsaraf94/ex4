@@ -13,7 +13,7 @@
 #include "StatePriorityQueue.h"
 using namespace std;
 template<typename T>
-class BestFirstSearch : public Searcher<State<T>> {
+class BestFirstSearch : public Searcher<T> {
   int evaluatedNodes;
   set<State<T>> closed;
   Solution<vector<State<T>>> backTrace(State<T> s){
@@ -47,7 +47,7 @@ class BestFirstSearch : public Searcher<State<T>> {
     return evaluatedNodes;
   }
 
-  Solution<T> search(Searchable<T> s) {
+  Solution<vector<State<T>>> search(Searchable<T> s) {
     this->open_list.push(*(s.getInitialState()));
     while (!this->open_list.isEmpty()) {
       State<T> n = popOpenList();
