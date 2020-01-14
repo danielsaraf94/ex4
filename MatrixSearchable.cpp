@@ -23,35 +23,43 @@ list<State<Point> *> MatrixSearchable::getAllPossibleStates(State<Point> *s) {
   int y = s->getState().getY();
   if(x>0){
     Point p{x-1,y};
-    State<Point>* newState = new State<Point>(p);
     int value = this->matrix_problem->getValuebyIndex(x-1,y);
-    newState->setCameFrom(s);
-    newState->setCost(s->getCost()+value);
-    list.push_front(newState);
+    if(value!=-1){
+      State<Point>* newState = new State<Point>(p);
+      newState->setCameFrom(s);
+      newState->setCost(s->getCost()+value);
+      list.push_front(newState);
+    }
   }
   if(y>0){
     Point p{x,y-1};
-    State<Point>* newState = new State<Point>(p);
     int value = this->matrix_problem->getValuebyIndex(x,y-1);
-    newState->setCameFrom(s);
-    newState->setCost(s->getCost()+value);
-    list.push_front(newState);
+    if(value!=-1){
+      State<Point>* newState = new State<Point>(p);
+      newState->setCameFrom(s);
+      newState->setCost(s->getCost()+value);
+      list.push_front(newState);
+    }
   }
   if(x<this->matrix_problem->GetColsNum()){
     Point p{x+1,y};
-    State<Point>* newState = new State<Point>(p);
     int value = this->matrix_problem->getValuebyIndex(x+1,y);
-    newState->setCameFrom(s);
-    newState->setCost(s->getCost()+value);
-    list.push_front(newState);
+    if(value!=-1){
+      State<Point>* newState = new State<Point>(p);
+      newState->setCameFrom(s);
+      newState->setCost(s->getCost()+value);
+      list.push_front(newState);
+    }
   }
   if(y<this->matrix_problem->GetRowsNum()){
     Point p{x,y+1};
-    State<Point>* newState = new State<Point>(p);
     int value = this->matrix_problem->getValuebyIndex(x,y+1);
-    newState->setCameFrom(s);
-    newState->setCost(s->getCost()+value);
-    list.push_front(newState);
+    if(value!=-1){
+      State<Point>* newState = new State<Point>(p);
+      newState->setCameFrom(s);
+      newState->setCost(s->getCost()+value);
+      list.push_front(newState);
+    }
   }
   return list;
 }
