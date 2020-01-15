@@ -7,6 +7,9 @@
 #include "CacheManager.h"
 #include "unordered_map"
 #include "list"
+#include <iostream>
+#include <map>
+#include <string>
 using namespace std;
 class FileCacheManager : public CacheManager<string, string> {
   int currentSize;

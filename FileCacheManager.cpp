@@ -18,7 +18,8 @@ void FileCacheManager::delFromCache(string key) {
   this->currentSize--;
 }
 bool FileCacheManager::isThereSolution(string s) {
-  return this->boolMap[s];
+  bool isSolve = boolMap[s];
+  return isSolve;
 }
 //check if we are not exceeding
 void FileCacheManager::checkCache() {
@@ -63,7 +64,6 @@ string FileCacheManager::readFromFile(string key) {
     }
     input_file.close();
   } else cout << "Unable to open file";
-
   return all_file;
 }
 

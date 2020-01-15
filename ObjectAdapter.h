@@ -18,6 +18,7 @@ class ObjectAdapter : public Solver<Problem<MatrixProblem>, Solution<string>> {
   ObjectAdapter(Searcher<Point, vector<State<Point>>> *s) {
     searcher = s;
   }
+  Solver* getClone() {return new ObjectAdapter(searcher->getClone());}
   ObjectAdapter() {};
   Solution<string> solve(Problem<MatrixProblem> p) {
     MatrixProblem *m = new MatrixProblem(p.GetProblemDescribe());

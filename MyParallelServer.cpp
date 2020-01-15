@@ -69,9 +69,6 @@ void MyParallelServer::stop() {
   to_stop = true;
 }
 void MyParallelServer::handleClient(ClientHandler *client_handler, int client_socket) {
-  // a test that the server runs in parrallel - delete it in the end!!
-  static int num_of_clients=0;
-  num_of_clients++;
-  while(num_of_clients<1){}
-  client_handler->handleClient(client_socket);
+  ClientHandler* ch = client_handler->getClone();
+  ch->handleClient(client_socket);
 }

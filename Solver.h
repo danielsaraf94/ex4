@@ -19,6 +19,7 @@ class Solver {
  public:
   Solver<P,S>(){};
   virtual S solve(P) = 0;
+  virtual Solver* getClone(){}
 };
 
 #endif //EX4__SOLVER_H_

@@ -44,7 +44,7 @@ class MatrixProblem {
     return this->matrix[x][y];
   }
   string toString() {
-    char buffer[2048];
+    char buffer[2048]={0};
     strcat(buffer, to_string(start.getX()).c_str());
     strcat(buffer, to_string(start.getY()).c_str());
     strcat(buffer, to_string(finish.getX()).c_str());

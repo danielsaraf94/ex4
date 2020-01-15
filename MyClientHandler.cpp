@@ -14,6 +14,7 @@ MyClientHandler::MyClientHandler(CacheManager<string, string> *c, Solver<Problem
   this->cache_manager = c;
   this->solver = s;
 }
+
 int MyClientHandler::getNumberOfCols(string line) {
   int c = 1;
   for (char ch:line) {
@@ -34,7 +35,6 @@ void MyClientHandler::handleClient(int client_socket) {
   strcat(all_matrix, buffer);
   string end = "end";
   while (str.find(end) == string::npos) {
-    cout << str << endl;
     char buffer[5000] = {0};
     read(client_socket, buffer, 5000);
     strcat(all_matrix, buffer);
@@ -73,12 +73,6 @@ void MyClientHandler::handleClient(int client_socket) {
     line.erase(0, pos + 1);
     matrix[i][j] = stoi(number);
   }
-  for (int i = 0; i < r; i++) {
-    for (int j = 0; j < c; j++) {
-      cout << matrix[i][j] << " ";
-    }
-    cout << endl;
-  }
 
   Point start, finish;
   line = from_client[from_client.size() - 2];
@@ -105,14 +99,18 @@ void MyClientHandler::handleClient(int client_socket) {
   auto hashed = hasher(matrix_problem.toString());
   string key = to_string(hashed);
   if (cache_manager->isThereSolution(key)) {
+    locker.lock();
     solve_str = cache_manager->getSolution(key);
+    locker.unlock();
     cout << key << ": got it!" << endl;
   } else {
     cout << key << ": didnt got it!" << endl;
     auto *problem = new Problem<MatrixProblem>(matrix_problem);
     solve_str = (solver->solve(*problem)).GetSolutionDescribe();
     delete (problem);
+    locker.lock();
     cache_manager->saveSolution(key, solve_str);
+    locker.unlock();
   }
   char *temp = new char[solve_str.length() + 1];
   strcpy(temp, solve_str.c_str());

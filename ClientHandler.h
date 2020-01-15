@@ -7,6 +7,6 @@
 class ClientHandler {
  public:
   virtual void handleClient(int) = 0;
-
+  virtual ClientHandler* getClone() {};
 };
 #endif //EX4_5__CLIENTHANDLER_H_
