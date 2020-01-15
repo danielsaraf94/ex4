@@ -15,6 +15,7 @@ class MatrixSearchable:public Searchable<Point> {
   State<Point>* getInitialState();
   bool isGoalState(State<Point>* s);
   list<State<Point>*> getAllPossibleStates(State<Point>* s);
+  State<Point>* getGoalState();
 };
 
 #endif //EX4__MATRIXSEARCHABLE_H_

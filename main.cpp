@@ -10,10 +10,11 @@
 #include "BreadthFirstSearch.h"
 #include "BestFirstSearch.h"
 #include "DepthFirstSearch.h"
+#include "AStar.h"
 using namespace std;
 int main(int argc, char *argv[]) {
   MyParallelServer server;
-  ObjectAdapter sr(new DepthFirstSearch<Point>());
+  ObjectAdapter sr(new AStar<Point>());
   FileCacheManager fcm;
   MyClientHandler ch(&fcm, &sr);
   server.open(atoi(argv[1]), &ch);

@@ -11,7 +11,7 @@
 #include "Searcher.h"
 #include "unordered_map"
 #include "queue"
-#include "StateStack.h"
+#include "Stack.h"
 template<typename T>
 class DepthFirstSearch : public Searcher<T, vector<State<T>>> {
   int num_of_node_evaluated = 0;
