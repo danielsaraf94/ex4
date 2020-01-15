@@ -41,7 +41,7 @@ class StatePriorityQueue {
     if (!contain(s)) {
       throw "The state does not exist";
     }
-    contains_map[s.getState()]=false;
+    contains_map.erase(s.getState());
     pq.erase(pq.begin() + this->costOfState[s.getState()]);
     this->costOfState.erase(s.getState());
   }
@@ -58,6 +58,7 @@ class StatePriorityQueue {
     State<T> s = pq[0];
     this->costOfState.erase(s.getState());
     pq.erase(pq.begin());
+    contains_map.erase(s.getState());
     return s;
   }
   void push(State<T> s) {

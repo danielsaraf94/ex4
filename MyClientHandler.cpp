@@ -24,19 +24,19 @@ int MyClientHandler::getNumberOfCols(string line) {
 }
 void MyClientHandler::handleClient(int client_socket) {
   char all_matrix[5000] = {0};
-  char buffer[1024] = {0};
+  char buffer[5000] = {0};
   vector<string> from_client;
   string str;
   string solve_str;
   // read from client
-  read(client_socket, buffer, 1024);
+  read(client_socket, buffer, 5000);
   str = buffer;
   strcat(all_matrix, buffer);
   string end = "end";
-  while (end != str) {
+  while (str.find(end) == string::npos) {
     cout << str << endl;
-    char buffer[1024] = {0};
-    read(client_socket, buffer, 1024);
+    char buffer[5000] = {0};
+    read(client_socket, buffer, 5000);
     strcat(all_matrix, buffer);
     str = buffer;
   }
@@ -75,7 +75,7 @@ void MyClientHandler::handleClient(int client_socket) {
   }
   for (int i = 0; i < r; i++) {
     for (int j = 0; j < c; j++) {
-      cout << matrix[i][j]<<" ";
+      cout << matrix[i][j] << " ";
     }
     cout << endl;
   }
@@ -111,6 +111,7 @@ void MyClientHandler::handleClient(int client_socket) {
     cout << key << ": didnt got it!" << endl;
     auto *problem = new Problem<MatrixProblem>(matrix_problem);
     solve_str = (solver->solve(*problem)).GetSolutionDescribe();
+    delete (problem);
     cache_manager->saveSolution(key, solve_str);
   }
   char *temp = new char[solve_str.length() + 1];
@@ -120,7 +121,6 @@ void MyClientHandler::handleClient(int client_socket) {
   if (is_sent == -1) {
     std::cout << "Error sending message" << std::endl;
   }
-
   close(client_socket);
 }
 

@@ -23,5 +23,24 @@ class Point{
   }
   friend ostream& operator<<(std::ostream& os, Point const& p);
 };
+namespace std {
 
+template <>
+struct hash<Point>
+{
+  std::size_t operator()(const Point& p) const
+  {
+    using std::size_t;
+    using std::hash;
+    using std::string;
+
+    // Compute individual hash values for first,
+    // second and third and combine them using XOR
+    // and bit shifting:
+
+    return ((hash<int>()(p.getX())
+        ^ (hash<int>()(p.getY()) << 1)) >> 1);
+  }
+};
+}
 #endif //EX4_5__POINT_H_

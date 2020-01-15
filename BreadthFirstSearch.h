@@ -51,25 +51,5 @@ class BreadthFirstSearch : public Searcher<T,vector<State<T>>>{
     return solution;
   }
 };
-namespace std {
 
-template <>
-struct hash<Point>
-{
-  std::size_t operator()(const Point& p) const
-  {
-    using std::size_t;
-    using std::hash;
-    using std::string;
-
-    // Compute individual hash values for first,
-    // second and third and combine them using XOR
-    // and bit shifting:
-
-    return ((hash<int>()(p.getX())
-        ^ (hash<int>()(p.getY()) << 1)) >> 1);
-  }
-};
-
-}
 #endif //EX4_5__BREADTHFIRSTSEARCH_H_

@@ -7,5 +7,6 @@
 class ClientHandler {
  public:
   virtual void handleClient(int) = 0;
+
 };
 #endif //EX4_5__CLIENTHANDLER_H_
