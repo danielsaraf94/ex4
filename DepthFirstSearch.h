@@ -11,6 +11,7 @@
 #include "Searcher.h"
 #include "unordered_map"
 #include "queue"
+#include "StateStack.h"
 template<typename T>
 class DepthFirstSearch : public Searcher<T, vector<State<T>>> {
   int num_of_node_evaluated = 0;
@@ -20,7 +21,7 @@ class DepthFirstSearch : public Searcher<T, vector<State<T>>> {
   };
   int getNumberOfNodeEvaluated() { return num_of_node_evaluated; }
   Solution<vector<State<T>>> search(Searchable<T> &searchable) {
-    stack<State<T>> stack;
+    Stack<State<T>> stack;
     State<T> *v;
     State<T> *prev_v = NULL;
     list<State<T> *> list;
@@ -28,7 +29,8 @@ class DepthFirstSearch : public Searcher<T, vector<State<T>>> {
     stack.push(*(searchable.getInitialState()));
     while (!stack.empty()) {
       num_of_node_evaluated++;
-      v = &stack.top();
+      v = new State<T>(stack.top().getState());
+      v->setCost(stack.top().getCost());
       stack.pop();
       v->setCameFrom(prev_v);
       prev_v = v;
