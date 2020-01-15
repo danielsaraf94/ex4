@@ -32,17 +32,27 @@ class StatePriorityQueue {
       return binarySearch(cost, size - newSize, location + newSize);
     }
   }
+  int findState(T s) {
+    int i, size = pq.size();
+    for (i = 0; i < size; i++) {
+      if (pq[i].getState() == s) {
+        return i;
+      }
+    }
+    return i;
+  }
  public:
   bool contain(State<T> s) {
     if (contains_map.find(s.getState()) == contains_map.end()) return false;
     return (contains_map[s.getState()]);
   }
-  void remove(State<T> s) {
+  State<T> *remove(State<T> s) {
     if (!contain(s)) {
       throw "The state does not exist";
     }
     contains_map.erase(s.getState());
-    pq.erase(pq.begin() + this->costOfState[s.getState()]);
+    int i = findState(s.getState());
+    pq.erase(pq.begin() + i);
     this->costOfState.erase(s.getState());
   }
   double getStateCost(State<T> s) {

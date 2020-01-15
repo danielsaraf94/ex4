@@ -14,7 +14,8 @@
 using namespace std;
 int main(int argc, char *argv[]) {
   MyParallelServer server;
-  ObjectAdapter sr(new AStar<Point>());
+  Searcher<Point,vector<State<Point>>>* s = new BestFirstSearch<Point>();
+  ObjectAdapter sr(s);
   FileCacheManager fcm;
   MyClientHandler ch(&fcm, &sr);
   server.open(atoi(argv[1]), &ch);

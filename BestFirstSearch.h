@@ -71,10 +71,15 @@ class BestFirstSearch : public Searcher<T, vector<State<T>>> {
       for (State<T> *state: successors) {
         if (map.find(state->getState()) == map.end() && !open_list.contain(*state)) {
           open_list.push(*state);
+          delete(state);
         } else if (open_list.contain(*state)) {
           if (state->getCost() < open_list.getStateCost(*state)) {
             open_list.remove(*state);
             open_list.push(*state);
+            delete(state);
+          }
+          else{
+            delete(state);
           }
         }
       }

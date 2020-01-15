@@ -53,6 +53,8 @@ class ObjectAdapter : public Solver<Problem<MatrixProblem>, Solution<string>> {
     }
     Solution<string> solution;
     solution.SetSolutionDescribe(str);
+    int sum = searcher->getNumberOfNodeEvaluated();
+    cout<<sum<<endl;
     return solution;
   }
 };
