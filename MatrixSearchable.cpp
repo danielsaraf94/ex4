@@ -41,7 +41,7 @@ list<State<Point> *> MatrixSearchable::getAllPossibleStates(State<Point> *s) {
       list.push_front(newState);
     }
   }
-  if(x<this->matrix_problem->GetColsNum()-1){
+  if(x<(matrix_problem->GetRowsNum()-1)){
     Point p{x+1,y};
     int value = this->matrix_problem->getValuebyIndex(x+1,y);
     if(value!=-1){
@@ -51,7 +51,7 @@ list<State<Point> *> MatrixSearchable::getAllPossibleStates(State<Point> *s) {
       list.push_front(newState);
     }
   }
-  if(y<this->matrix_problem->GetRowsNum()-1){
+  if(y<(matrix_problem->GetColsNum()-1)){
     Point p{x,y+1};
     int value = this->matrix_problem->getValuebyIndex(x,y+1);
     if(value!=-1){

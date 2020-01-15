@@ -29,6 +29,7 @@ class MyClientHandler : public ClientHandler {
   ClientHandler* getClone(){
     return new MyClientHandler(cache_manager, solver->getClone());
   }
+  bool checkProblemValidation(Point,Point,int,int,int);
 };
 
 #endif //EX4_5__MYTESTCLIENTHANDLER_H_

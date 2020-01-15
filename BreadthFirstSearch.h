@@ -11,6 +11,9 @@ template<typename T>
 class BreadthFirstSearch : public Searcher<T,vector<State<T>>>{
   int num_of_node_evaluated = 0;
  public:
+  Searcher<T, vector<State<T>>>* getClone(){
+    return new BreadthFirstSearch<T>();
+  };
   int getNumberOfNodeEvaluated() { return num_of_node_evaluated; }
   Solution<vector<State<T>>> search(Searchable<T>& searchable) {
     State<T> *v;
@@ -24,7 +27,7 @@ class BreadthFirstSearch : public Searcher<T,vector<State<T>>>{
       v = queue.front();
       queue.pop();
       if (searchable.isGoalState(v))
-        return backTrace(*v);//here we should return solution
+        return backTrace(*v);
       list = searchable.getAllPossibleStates(v);
       for (State<T>* s : list) {
         if (map.find(s->getState()) == map.end()) {
