@@ -4,6 +4,7 @@
 
 #ifndef EX4__STATE_H_
 #define EX4__STATE_H_
+#include "Point.h"
 template<typename T>
 class State {
   T state;
@@ -18,6 +19,11 @@ class State {
   }
   bool operator!=(const State &a) const {
     return !(*this == *a);
+  }
+  State<T>(int cost,T state, State<T>* cameFrom) {
+    this->cost = cost;
+    this->state = state;
+    this->cameFrom = cameFrom;
   }
   State<T>(T s) {
     this->state = s;
@@ -40,5 +46,19 @@ class State {
     return cameFrom;
   }
 };
+
+namespace std {
+template<>
+struct hash<State<Point>> {
+  std::size_t operator()(const State<Point> &s) const {
+    using std::size_t;
+    using std::hash;
+    using std::string;
+
+    std::size_t h1 = std::hash<Point>{}(s.getState());
+    return h1;
+  }
+};
+}
 
 #endif //EX4__STATE_H_

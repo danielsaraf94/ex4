@@ -18,7 +18,7 @@ class BestFirstSearch : public Searcher<T, vector<State<T>>> {
   int evaluatedNodes;
   StatePriorityQueue<T> open_list;
   set<State<T>> closed;
-  Searcher<T, vector<State<T>>>* getClone(){
+  Searcher<T, vector<State<T>>> *getClone() {
     return new BestFirstSearch<T>();
   };
   Solution<vector<State<T>>> backTrace(State<T> s) {
@@ -76,8 +76,6 @@ class BestFirstSearch : public Searcher<T, vector<State<T>>> {
             open_list.remove(*state);
             open_list.push(*state);
           }
-        }else{
-          open_list.push(*state);
         }
       }
     }
