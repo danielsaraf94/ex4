@@ -8,7 +8,7 @@ template<typename T>
 class State {
   T state;
   double cost;
-  State<T> *cameFrom;
+  State<T> *cameFrom = nullptr;
  public:
   bool operator<(const State &a) const {
     return cost < a.cost;
@@ -16,13 +16,13 @@ class State {
   bool operator==(const State &a) const {
     return (getState() == a.getState());
   }
-  bool operator!=(const State &a) const{
+  bool operator!=(const State &a) const {
     return !(*this == *a);
   }
   State<T>(T s) {
     this->state = s;
   }
-  State<T>(){
+  State<T>() {
 
   }
   double getCost() const { return cost; }
@@ -36,11 +36,9 @@ class State {
   void setCameFrom(State<T> *came_from) {
     cameFrom = came_from;
   }
-  State<T>* getCameFrom(){
+  State<T> *getCameFrom() {
     return cameFrom;
   }
 };
-
-
 
 #endif //EX4__STATE_H_

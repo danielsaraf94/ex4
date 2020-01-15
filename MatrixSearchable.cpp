@@ -11,11 +11,11 @@ bool MatrixSearchable::isGoalState(State<Point> *s) {
 }
 State<Point>* MatrixSearchable::getInitialState() {
   Point p = this->matrix_problem->GetStart();
-  State<Point>* newState = new State<Point>(p);
+  State<Point>* nState = new State<Point>(p);
   int value = this->matrix_problem->getValuebyIndex(p.getX(),p.getX());
-  newState->setCameFrom(NULL);
-  newState->setCost(value);
-  return newState;
+  nState->setCameFrom(NULL);
+  nState->setCost(value);
+  return nState;
 }
 list<State<Point> *> MatrixSearchable::getAllPossibleStates(State<Point> *s) {
   list<State<Point>*> list;
