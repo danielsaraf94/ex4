@@ -38,9 +38,10 @@ class AStar : public Searcher<T, vector<State<T>>> {
       open_set.erase(*current);
       list = searchable.getAllPossibleStates(current);
       for (State<T> *neighbor : list) {
-        int tentative_gScore = g_score[*current] + (neighbor->getCost() - current->getCost());
+        double tentative_gScore = g_score[*current] + (neighbor->getCost() - current->getCost());
         if ((tentative_gScore < g_score[*neighbor]) || g_score[*neighbor] == 0) {
           came_from[*neighbor] = *current;
+          cout<<neighbor->getState()<<endl;
           g_score[*neighbor] = tentative_gScore;
           f_score[*neighbor] = g_score[*neighbor] + getH(*neighbor, searchable);
           if (open_set.find(*neighbor) == open_set.end())
@@ -61,22 +62,27 @@ class AStar : public Searcher<T, vector<State<T>>> {
     //return solution;
   }
 
-  int getH(State<Point> node, Searchable<Point> &searchable) {
+  double getH(State<Point> node, Searchable<Point> &searchable) {
     State<Point> *goal = searchable.getGoalState();
     int dx = abs(node.getState().getX() - goal->getState().getX());
-    int dy = abs(node.getState().getX() - goal->getState().getX());
-    return 10*(dx + dy);
+    int dy = abs(node.getState().getY() - goal->getState().getY());
+    return (dx + dy);
   }
 
   State<T> *findLowestFscore(set<State<T>> open_set, unordered_map<State<T>, int> f_score) {
     State<T> *lowest = new State<T>();
-    lowest->setCost(999999);
-    for (pair<State<Point>, int> s:f_score)
-      if (s.first.getCost() < lowest->getCost())
-        lowest = &s.first;
+    int min_fscore=999999999;
+    for (State<T> s : open_set){
+      if(f_score[s]<min_fscore){
+        min_fscore=f_score[s];
+        lowest = &s;
+      }
+    }
+
     lowest = new State<T>(lowest->getCost(), lowest->getState(), lowest->getCameFrom());
     return lowest;
   }
 };
 
 #endif //EX4_5__ASTAR_H_
+//10 00 02 11
