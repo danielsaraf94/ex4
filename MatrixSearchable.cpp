@@ -24,6 +24,7 @@ State<Point> *MatrixSearchable::getGoalState() {
 }
 
 list<State<Point> *> MatrixSearchable::getAllPossibleStates(State<Point> *s) {
+  // check and return all the possible states we can generate from the state s according the walls and the matrix limits
   list<State<Point> *> list;
   int x = s->getState().getX();
   int y = s->getState().getY();
@@ -74,6 +75,7 @@ list<State<Point> *> MatrixSearchable::getAllPossibleStates(State<Point> *s) {
   return list;
 }
 MatrixSearchable::~MatrixSearchable() {
+  // free all the states we have created
   for (State<Point> *s : total_states)
     if (s != nullptr)
       delete (s);

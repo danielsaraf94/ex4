@@ -30,11 +30,13 @@ void MySerialServer::open(int port, ClientHandler *client_handler) {
     perror("listen");
     exit(EXIT_FAILURE);
   }
+  // run server and wait until its close
   thread t(start, server_fd, address, client_handler, &to_stop);
   t.join();
 }
 
 void MySerialServer::start(int socketfd, sockaddr_in address, ClientHandler *client_handler, bool *to_stop) {
+  // run until 2 min passed or to_stop is on
   while (!(*to_stop)) {
     int iResult;
     int client_socket = 0;
@@ -42,7 +44,7 @@ void MySerialServer::start(int socketfd, sockaddr_in address, ClientHandler *cli
     fd_set rfds;
     FD_ZERO(&rfds);
     FD_SET(socketfd, &rfds);
-
+    // set timer to 2 minutes
     tv.tv_sec = 120.0;
     tv.tv_usec = 0;
     int addrlen = sizeof(address);
@@ -57,6 +59,7 @@ void MySerialServer::start(int socketfd, sockaddr_in address, ClientHandler *cli
       std::cerr << "can't accept client" << std::endl;
       return;
     }
+    // client connected, run it in a separate thread
     client_handler->handleClient(client_socket);
   }
 }

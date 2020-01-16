@@ -13,6 +13,7 @@
 #include "AStar.h"
 using namespace std;
 int main() {
+  // allocate all the necessary object to get and solve a problem and run the parallel server -
   MyParallelServer server;
   Searcher<Point, vector<State<Point>>> *s = new AStar<Point>();
   ObjectAdapter sr(s);

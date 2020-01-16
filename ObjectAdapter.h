@@ -12,6 +12,7 @@
 #include "MatrixSearchable.h"
 
 class ObjectAdapter : public Solver<Problem<MatrixProblem>, Solution<string>> {
+  // adapt between solver and searcher
   Searcher<Point, vector<State<Point>>> *searcher;
   MatrixSearchable *searchable;
  public:
@@ -22,6 +23,7 @@ class ObjectAdapter : public Solver<Problem<MatrixProblem>, Solution<string>> {
   Solver *getClone() { return new ObjectAdapter(searcher->getClone()); }
   ObjectAdapter() {};
   Solution<string> solve(Problem<MatrixProblem> p) {
+    // get the problem from p and let the searcher solve it, than return the solution
     MatrixProblem *m = new MatrixProblem(p.GetProblemDescribe());
     this->searchable = new MatrixSearchable(m);
     Solution<string> newSol = adapt(this->searcher->search(*(this->searchable)));
@@ -30,6 +32,7 @@ class ObjectAdapter : public Solver<Problem<MatrixProblem>, Solution<string>> {
     return newSol;
   }
   Solution<string> adapt(Solution<vector<State<Point>>> s) {
+    // convert the path to string with up down left and right directions
     string str = "";
     vector<State<Point>> vec = s.GetSolutionDescribe();
     for (int i = 0; i < (int)vec.size() - 1; i++) {

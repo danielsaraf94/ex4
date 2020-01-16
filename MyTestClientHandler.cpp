@@ -19,16 +19,20 @@ void MyTestClientHandler::handleClient(int client_socket) {
   str = buffer;
   string end = "end";
   while (end != str) {
+    // read until it reach the "end" word
     if (cache_manager->isThereSolution(str)) {
+      //check if there is a saved solution
       reverse_str = cache_manager->getSolution(str);
       cout<< str <<": got it!"<<endl;
     } else {
+      // there is no solution, solve it and save
       cout<< str <<": didnt got it!"<<endl;
       reverse_str = solver->solve(str);
       cache_manager->saveSolution(str, reverse_str);
     }
     char *c = new char[reverse_str.length() + 1];
     strcpy(c, reverse_str.c_str());
+    // send solution
     int is_sent = send(client_socket, c, strlen(c), 0);
     char buffer2[1024] = {0};
     read(client_socket, buffer2, 1024);

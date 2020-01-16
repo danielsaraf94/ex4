@@ -72,6 +72,7 @@ class AStar : public Searcher<T, vector<State<T>>> {
   }
 
   Solution<vector<State<T>>> reconstruct_path(State<T> current) {
+    //create the path of solution
     vector<State<T>> total_path;
     current.setCost(realCost[current.getState()]);
     total_path.push_back(current);
@@ -90,6 +91,7 @@ class AStar : public Searcher<T, vector<State<T>>> {
   }
 
   double getH(State<Point> node, Searchable<Point> &searchable) {
+    //get the h distance between a node and the goal node
     State<Point> *goal = searchable.getGoalState();
     int dx = abs(node.getState().getX() - goal->getState().getX());
     int dy = abs(node.getState().getY() - goal->getState().getY());

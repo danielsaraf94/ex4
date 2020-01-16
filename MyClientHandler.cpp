@@ -24,25 +24,27 @@ int MyClientHandler::getNumberOfCols(string line) {
   return c;
 }
 void MyClientHandler::handleClient(int client_socket) {
-  char all_matrix[5000] = {0};
-  char buffer[5000] = {0};
+  string all_matrix = "";
+  char buffer[2048] = {0};
   vector<string> from_client;
   string str;
   string solve_str;
-  // read from client
-  read(client_socket, buffer, 5000);
+  // read from client first line
+  read(client_socket, buffer, 2048);
   str = buffer;
   if (str != "\n")
-    strcat(all_matrix, buffer);
+    all_matrix += str;
   string end = "end";
+  // read until its reach the "end" word
   while (str.find(end) == string::npos) {
-    char buffer2[5000] = {0};
-    read(client_socket, buffer2, 5000);
+    char buffer2[2048] = {0};
+    read(client_socket, buffer2, 2048);
     str = buffer2;
     if (str != "\n")
-      strcat(all_matrix, buffer2);
+      all_matrix += str;
   }
   int i = 0;
+  // split it to lines and enter to a from_client vector
   while (all_matrix[i] != 'e') {
     string temp = "";
     while (all_matrix[i] != '\n') {
@@ -52,7 +54,7 @@ void MyClientHandler::handleClient(int client_socket) {
     i++;
     from_client.insert(from_client.end(), temp);
   }
-
+  // convert it to int[][] form
   string number, line;
   int r = (int) from_client.size() - 2;
   int c = getNumberOfCols(from_client[0]);
@@ -75,7 +77,7 @@ void MyClientHandler::handleClient(int client_socket) {
     line.erase(0, pos + 1);
     matrix[i][j] = stoi(number);
   }
-
+  // extract the start and finish point
   Point start, finish;
   line = from_client[from_client.size() - 2];
   size_t pos = 0;
@@ -96,15 +98,17 @@ void MyClientHandler::handleClient(int client_socket) {
   number = line.substr(0, pos);
   line.erase(0, pos + 1);
   finish.setY(stoi(number));
+  // check if the start and finish points is inside the matrix
   if (!checkProblemValidation(start, finish, r, c, client_socket)) {
-    cout << "client disconnected" << endl;
     return;
   }
+  // generate the problem and make a uniq hash for it
   MatrixProblem matrix_problem(matrix, start, finish, r, c);
   hash < string > hasher;
   auto hashed = hasher(matrix_problem.toString());
   string key = to_string(hashed);
   key += ("_" + to_string(solver->getSolverID()));
+  // check if there is a solved solution for the problem
   if (cache_manager->isThereSolution(key)) {
     locker.lock();
     solve_str = cache_manager->getSolution(key);
@@ -120,7 +124,7 @@ void MyClientHandler::handleClient(int client_socket) {
     cache_manager->saveSolution(key, solve_str);
     locker.unlock();
   }
-  //char *temp = new char[solve_str.length() + 1];
+  // send solution to client
   char *temp = (char *) malloc((solve_str.length() + 1) * sizeof(char));
   strcpy(temp, solve_str.c_str());
   int is_sent = send(client_socket, temp, strlen(temp), 0);
@@ -132,10 +136,10 @@ void MyClientHandler::handleClient(int client_socket) {
   cout << "client disconnected" << endl;
 }
 bool MyClientHandler::checkProblemValidation(Point start, Point finish, int rows, int cols, int client_socket) {
+  // check if the point inside the matrix
   if (!(start.getX() >= 0 && start.getX() < rows && start.getY() >= 0 && start.getY() < cols &&
       finish.getX() >= 0 && finish.getX() < rows && finish.getY() >= 0 && finish.getY() < cols)) {
     string solve_str = "invalid problem, start or finish point are out of matrix";
-    //  char *temp = new char[solve_str.length() + 1];
     char *temp = (char *) malloc((solve_str.length() + 1) * sizeof(char));
     strcpy(temp, solve_str.c_str());
     int is_sent = send(client_socket, temp, strlen(temp), 0);
@@ -144,7 +148,7 @@ bool MyClientHandler::checkProblemValidation(Point start, Point finish, int rows
       std::cout << "Error sending message" << std::endl;
     }
     close(client_socket);
-    cout << "cant solve problem" << endl;
+    cout << "cant solve problem, disconnect client.." << endl;
     return false;
   }
   return true;

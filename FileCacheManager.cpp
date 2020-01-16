@@ -11,6 +11,7 @@ FileCacheManager::FileCacheManager() {
 }
 
 void FileCacheManager::delFromCache(string key) {
+  // delete a value from cache memory
   typename list<pair<string, string>>::iterator it1 = this->cacheMap[key], it2 = this->cacheMap[key];
   advance(it2, 1);
   this->doublyList.erase(it1, it2);
@@ -18,8 +19,14 @@ void FileCacheManager::delFromCache(string key) {
   this->currentSize--;
 }
 bool FileCacheManager::isThereSolution(string s) {
-  bool isSolve = boolMap[s];
-  return isSolve;
+  // check if there is file that contains the solution
+  bool is_solved;
+  ifstream input_file("Solution_" + s + ".txt");
+  if (input_file.is_open()) {
+    is_solved = true;
+    input_file.close();
+  } else { is_solved = false; }
+  return is_solved;
 }
 //check if we are not exceeding
 void FileCacheManager::checkCache() {
@@ -27,7 +34,9 @@ void FileCacheManager::checkCache() {
     delFromCache(this->doublyList.back().first);
   }
 }
+
 bool FileCacheManager::printToFile(string key, string obj) {
+  // print the solution to file
   ofstream outfile("Solution_" + key + ".txt");
   if (!outfile) {
     return false;
@@ -40,6 +49,7 @@ bool FileCacheManager::printToFile(string key, string obj) {
   return true;
 }
 void FileCacheManager::saveSolution(string key, string obj) {
+  // save solution in the system
   if (this->cacheMap.count(key)) {
     delFromCache(key);
   }
@@ -68,6 +78,7 @@ string FileCacheManager::readFromFile(string key) {
 }
 
 string FileCacheManager::getSolution(string key) {
+  // return solution of the key
   string object;
   if (this->cacheMap.count(key)) {
     object = this->cacheMap[key]->second;

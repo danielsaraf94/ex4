@@ -24,7 +24,7 @@ class Point{
   friend ostream& operator<<(std::ostream& os, Point const& p);
 };
 namespace std {
-
+// hash function allow us later to use point inside a hash map
 template <>
 struct hash<Point>
 {

@@ -11,6 +11,7 @@ class State {
   double cost;
   State<T> *cameFrom = nullptr;
  public:
+  // operators overloading for sorting the states objects
   bool operator<(const State &a) const {
     return cost < a.cost;
   }
@@ -47,6 +48,7 @@ class State {
   }
 };
 
+//a hash function will allow us later to use state inside hash map
 namespace std {
 template<>
 struct hash<State<Point>> {

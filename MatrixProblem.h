@@ -44,6 +44,8 @@ class MatrixProblem {
     return this->matrix[x][y];
   }
   string toString() {
+    // make a string that contains all the problem (matrix + start point + end point)
+    // its necessary for hashing the problem
     string str="";
     str+= to_string(start.getX())+to_string(start.getY());
     str+=to_string(finish.getX())+to_string(finish.getY());

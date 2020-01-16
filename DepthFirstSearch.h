@@ -25,12 +25,15 @@ class DepthFirstSearch : public Searcher<T, vector<State<T>>> {
     State<T> *v;
     list<State<T> *> list;
     unordered_map<T, bool> discovered_map;
+    // push stack the start node
     stack.push(searchable.getInitialState());
     while (!stack.empty()) {
+      // count the nodes we get in
       num_of_node_evaluated++;
       v = stack.top();
       stack.pop();
       if (searchable.isGoalState(v)) {
+        // if we reach the goal state, make the path and return it
         return backTrace(*v);
       }
       if (discovered_map.find(v->getState()) == discovered_map.end()) {
@@ -46,6 +49,7 @@ class DepthFirstSearch : public Searcher<T, vector<State<T>>> {
     throw "cant reach goal";
   }
   Solution<vector<State<T>>> backTrace(State<T> s) {
+    // make the path from goal to the start point
     vector<State<T>> vec;
     vec.push_back(s);
     while (s.getCameFrom() != NULL) {
