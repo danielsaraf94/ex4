@@ -50,7 +50,7 @@ void MySerialServer::start(int socketfd, sockaddr_in address, ClientHandler *cli
     if (iResult > 0) {
       client_socket = accept(socketfd, (struct sockaddr *) &address, (socklen_t *) &addrlen);
     } else {
-      cout << "Time out, server shut down." << endl;
+      cout << "timeout, server shut down." << endl;
       return;
     }
     if (client_socket == -1) {

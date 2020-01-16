@@ -21,9 +21,8 @@ class DepthFirstSearch : public Searcher<T, vector<State<T>>> {
   };
   int getNumberOfNodeEvaluated() { return num_of_node_evaluated; }
   Solution<vector<State<T>>> search(Searchable<T> &searchable) {
-    Stack<State<T>*> stack;
+    Stack<State<T> *> stack;
     State<T> *v;
-    State<T> *prev_v = NULL;
     list<State<T> *> list;
     unordered_map<T, bool> discovered_map;
     stack.push(searchable.getInitialState());
@@ -31,28 +30,20 @@ class DepthFirstSearch : public Searcher<T, vector<State<T>>> {
       num_of_node_evaluated++;
       v = stack.top();
       stack.pop();
-      prev_v = v;
-      if (searchable.isGoalState(v)){
-        State<T> goal = (*v);
-        delete(v);
-        while (!(stack.empty())) {
-          delete (stack.top());
-          stack.pop();
-        }
-        return backTrace(goal);
+      if (searchable.isGoalState(v)) {
+        return backTrace(*v);
       }
       if (discovered_map.find(v->getState()) == discovered_map.end()) {
         discovered_map[v->getState()] = true;
         list = searchable.getAllPossibleStates(v);
         for (State<T> *s : list) {
-          if (discovered_map.find(s->getState()) == discovered_map.end()){
+          if (discovered_map.find(s->getState()) == discovered_map.end()) {
             stack.push(s);
-          }else{
-            delete(s);
           }
         }
       }
     }
+    throw "cant reach goal";
   }
   Solution<vector<State<T>>> backTrace(State<T> s) {
     vector<State<T>> vec;
@@ -69,6 +60,7 @@ class DepthFirstSearch : public Searcher<T, vector<State<T>>> {
     solution.SetSolutionDescribe(ret_vec);
     return solution;
   }
+  int getSearcherID(){return 4;}
 };
 
 #endif //EX4_5__DEPTHFIRSTSEARCH_H_

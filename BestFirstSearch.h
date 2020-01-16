@@ -14,10 +14,10 @@
 using namespace std;
 template<typename T>
 class BestFirstSearch : public Searcher<T, vector<State<T>>> {
-  int i = 0;
   int evaluatedNodes;
   StatePriorityQueue<T> open_list;
   set<State<T>> closed;
+
   Searcher<T, vector<State<T>>> *getClone() {
     return new BestFirstSearch<T>();
   };
@@ -25,10 +25,9 @@ class BestFirstSearch : public Searcher<T, vector<State<T>>> {
     vector<State<T>> vec;
     vec.push_back(s);
     while (s.getCameFrom() != NULL) {
-      State<T>* del = s.getCameFrom();
+      State<T> *del = s.getCameFrom();
       s = *(s.getCameFrom());
       vec.push_back(s);
-      delete(del);
     }
     emptyOpenlist();
     vector<State<T>> ret_vec;
@@ -39,16 +38,16 @@ class BestFirstSearch : public Searcher<T, vector<State<T>>> {
     solution.SetSolutionDescribe(ret_vec);
     return solution;
   }
-  void emptyOpenlist(){
+  void emptyOpenlist() {
     while (!(open_list.isEmpty()))
-      delete (open_list.poll());
+      open_list.poll();
   }
   State<T> popOpenList() {
     evaluatedNodes++;
     return open_list.poll();
   }
  public:
-
+  int getSearcherID(){return 2;}
   BestFirstSearch<T>() : Searcher<T, vector<State<T>>>() {
     this->evaluatedNodes = 0;
     open_list = StatePriorityQueue<T>();
@@ -71,7 +70,6 @@ class BestFirstSearch : public Searcher<T, vector<State<T>>> {
       map[n->getState()] = true;
       if (s.isGoalState(n)) {
         State<T> goal = *n;
-        delete(n);
         return backTrace(goal);
       }
       list<State<T> *> successors = s.getAllPossibleStates(n);
@@ -84,9 +82,7 @@ class BestFirstSearch : public Searcher<T, vector<State<T>>> {
             open_list.push(state);
           }
         }
-        else{
-          delete(state);
-        }
+
       }
     }
   }

@@ -23,13 +23,13 @@ class MyClientHandler : public ClientHandler {
   Solver<Problem<MatrixProblem>, Solution<string>> *solver;
   mutex locker;
  public:
-  MyClientHandler(CacheManager<string, string> *c,  Solver<Problem<MatrixProblem>, Solution<string>> *s);
+  MyClientHandler(CacheManager<string, string> *c, Solver<Problem<MatrixProblem>, Solution<string>> *s);
   void handleClient(int);
   int getNumberOfCols(string);
-  ClientHandler* getClone(){
+  ClientHandler *getClone() {
     return new MyClientHandler(cache_manager, solver->getClone());
   }
-  bool checkProblemValidation(Point,Point,int,int,int);
+  bool checkProblemValidation(Point, Point, int, int, int);
 };
 
 #endif //EX4_5__MYTESTCLIENTHANDLER_H_

@@ -14,12 +14,14 @@
 #include "Problem.h"
 #include "Solution.h"
 using namespace std;
-template<typename P,typename S>
+template<typename P, typename S>
 class Solver {
  public:
-  Solver<P,S>(){};
+  Solver<P, S>() {};
   virtual S solve(P) = 0;
-  virtual Solver* getClone(){}
+  virtual Solver *getClone() {return nullptr;}
+  virtual ~Solver(){}
+  virtual int getSolverID()=0;
 };
 
 #endif //EX4__SOLVER_H_

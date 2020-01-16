@@ -2,8 +2,8 @@
 // Created by daniels on 15/01/2020.
 //
 
-#ifndef EX4_5__ASTAR_H_
-#define EX4_5__ASTAR_H_
+#ifndef EX4_5_ASTAR_H
+#define EX4_5_ASTAR_H
 #include "Searcher.h"
 #include "unordered_map"
 #include "queue"
@@ -13,59 +13,79 @@
 template<typename T>
 class AStar : public Searcher<T, vector<State<T>>> {
   int num_of_node_evaluated = 0;
+  StatePriorityQueue<Point> open_list;
+  set<State<T>> closed;
+  unordered_map<T,double> realCost;
+
+  void emptyOpenlist(){
+    while (!(open_list.isEmpty()))
+      open_list.poll();
+  }
+
  public:
+  int getSearcherID(){return 1;}
   Searcher<T, vector<State<T>>> *getClone() {
     return new AStar<T>();
   };
-  int getNumberOfNodeEvaluated() { return num_of_node_evaluated; }
+
+  int getNumberOfNodeEvaluated() {
+    return num_of_node_evaluated;
+  }
 
   Solution<vector<State<T>>> search(Searchable<T> &searchable) {
-    double tentative_gScore;
-    State<T> *current;
-    bool flag;
-    list<State<T> *> list;
-    set<State<T>> open_set;
-    open_set.insert(*(searchable.getInitialState()));
-    unordered_map<State<T>, State<T>> came_from;
-    unordered_map<T, int> g_score;
-    g_score[searchable.getInitialState()->getState()] = 0;
-    unordered_map<T, int> f_score;
-    f_score[searchable.getInitialState()->getState()] = getH(*searchable.getInitialState(), searchable);
-    while (!open_set.empty()) {
+    num_of_node_evaluated = 0;
+    emptyOpenlist();
+    closed.clear();
+    realCost.clear();
+    double f_value;
+    double gCost;
+    unordered_map<T, bool> map;
+    State<T>* initalState = searchable.getInitialState();
+    open_list.push(initalState);
+    list<State<T>*> successors;
+    realCost[initalState->getState()]=initalState->getCost();
+    while(!open_list.isEmpty()){
+      State<T> *n = open_list.poll();
       num_of_node_evaluated++;
-      current = findLowestFscore(open_set, f_score);
-      if (searchable.isGoalState(current))
-        return reconstruct_path(came_from, current);
-      open_set.erase(*current);
-      list = searchable.getAllPossibleStates(current);
-      for (State<T> *neighbor : list) {
-        flag = false;
-        tentative_gScore = g_score[current->getState()] + (neighbor->getCost() - current->getCost());
-        if (g_score.find(neighbor->getState()) != g_score.end()) {
-          if (tentative_gScore < g_score[neighbor->getState()])
-            flag = true;
-        } else flag = true;
-        if (flag) {
-          came_from[*neighbor] = *current;
-          g_score[neighbor->getState()] = tentative_gScore;
-          f_score[neighbor->getState()] = g_score[neighbor->getState()] + getH(*neighbor, searchable);
-          if (open_set.find(*neighbor) == open_set.end())
-            open_set.insert(*neighbor);
+      if (searchable.isGoalState(n))
+        return reconstruct_path(*n);
+      closed.insert(*n);
+      map[n->getState()] = true;
+      successors = searchable.getAllPossibleStates(n);
+      for(State<T> * state: successors){
+        gCost =realCost[n->getState()]+state->getCost()-n->getCost();
+        f_value = gCost+getH(*state,searchable);
+        state->setCost(f_value);
+        if (map.find(state->getState()) == map.end() && !open_list.contain(*state)) {
+          open_list.push(state);
+          realCost[state->getState()]=gCost;
+        } else if (open_list.contain(*state)) {
+          if (state->getCost() < open_list.getStateCost(*state)) {
+            open_list.remove(*state);
+            open_list.push(state);
+            realCost[state->getState()]=gCost;
+          }
         }
       }
     }
-    throw "can not reach goal";
+    throw "cant reach goal";
   }
 
-  Solution<vector<State<T>>> reconstruct_path(unordered_map<State<T>, State<T>> came_from, State<T> *current) {
+  Solution<vector<State<T>>> reconstruct_path(State<T> current) {
     vector<State<T>> total_path;
-    total_path.insert(total_path.end(), *current);
-    while (came_from.find(*current) != came_from.end()) {
-      total_path.insert(total_path.end(), *current);
-      current = &came_from[*current];
+    current.setCost(realCost[current.getState()]);
+    total_path.push_back(current);
+    while (current.getCameFrom() != NULL) {
+      current = *(current.getCameFrom());
+      current.setCost(realCost[current.getState()]);
+      total_path.push_back(current);
+    }
+    vector<State<T>> ret_vec;
+    for (int i = total_path.size() - 1; i >= 0; i--) {
+      ret_vec.push_back(total_path[i]);
     }
     Solution<vector<State<T>>> solution;
-    solution.SetSolutionDescribe(total_path);
+    solution.SetSolutionDescribe(ret_vec);
     return solution;
   }
 
@@ -76,21 +96,6 @@ class AStar : public Searcher<T, vector<State<T>>> {
     return (dx + dy);
   }
 
-  State<T> *findLowestFscore(set<State<T>> open_set, unordered_map<T, int> f_score) {
-    State<T> *lowest = new State<T>();
-    int min_fscore = 999999999;
-    for (State<T> s : open_set) {
-      if (f_score.find(s.getState()) != f_score.end())
-        if (f_score[s.getState()] < min_fscore) {
-          min_fscore = f_score[s.getState()];
-          lowest = &s;
-        }
-    }
-
-    lowest = new State<T>(lowest->getCost(), lowest->getState(), lowest->getCameFrom());
-    return lowest;
-  }
 };
 
-#endif //EX4_5__ASTAR_H_
-//10 00 02 11
+#endif //EX4_5_ASTAR_H

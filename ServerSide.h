@@ -10,6 +10,7 @@ class Server {
  public:
   virtual void open(int, ClientHandler *) = 0;
   virtual void stop() = 0;
+  virtual ~Server()= default;
 };
 }
 #endif //EX4_5__SERVERSIDE_H_

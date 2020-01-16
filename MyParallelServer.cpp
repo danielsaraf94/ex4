@@ -39,6 +39,7 @@ void MyParallelServer::open(int port, ClientHandler *client_handler) {
 }
 
 void MyParallelServer::start(int socketfd, sockaddr_in address, ClientHandler *client_handler, bool *to_stop) {
+  cout << "Parallel server is up! waiting for clients.." << endl;
   while (!(*to_stop)) {
     int iResult;
     int client_socket = 0;
@@ -53,8 +54,9 @@ void MyParallelServer::start(int socketfd, sockaddr_in address, ClientHandler *c
     iResult = select(socketfd + 1, &rfds, (fd_set *) 0, (fd_set *) 0, &tv);
     if (iResult > 0) {
       client_socket = accept(socketfd, (struct sockaddr *) &address, (socklen_t *) &addrlen);
+      cout << "client connected, getting problem.." << endl;
     } else {
-      cout << "Time out, server shut down." << endl;
+      cout << "timeout, server shut down." << endl;
       return;
     }
     if (client_socket == -1) {
@@ -69,6 +71,7 @@ void MyParallelServer::stop() {
   to_stop = true;
 }
 void MyParallelServer::handleClient(ClientHandler *client_handler, int client_socket) {
-  ClientHandler* ch = client_handler->getClone();
+  ClientHandler *ch = client_handler->getClone();
   ch->handleClient(client_socket);
+  delete (ch);
 }

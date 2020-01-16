@@ -12,9 +12,10 @@ using namespace std;
 template<typename T>
 class StatePriorityQueue {
   unordered_map<T, bool> contains_map;
-  vector<State<T>*> pq;
+  vector<State<T> *> pq;
   map<State<T>, double> costOfState;
   int binarySearch(double cost, int size, int location) {
+    // search a var
     if (size == 0) {
       return location;
     }
@@ -33,6 +34,7 @@ class StatePriorityQueue {
     }
   }
   int findState(T s) {
+    // return that var index in pq
     int i, size = pq.size();
     for (i = 0; i < size; i++) {
       if (pq[i]->getState() == s) {
@@ -43,36 +45,40 @@ class StatePriorityQueue {
   }
  public:
   bool contain(State<T> s) {
+    // check if a var inside the pq
     if (contains_map.find(s.getState()) == contains_map.end()) return false;
     return (contains_map[s.getState()]);
   }
-  State<T> *remove(State<T> s) {
+  void remove(State<T> s) {
+    // delete a var from pq
     if (!contain(s)) {
       throw "The state does not exist";
     }
     contains_map.erase(s.getState());
     int i = findState(s.getState());
-    delete (pq[i]);
     pq.erase(pq.begin() + i);
     this->costOfState.erase(s.getState());
   }
   double getStateCost(State<T> s) {
+    // get the cosr of a var in pq
     if (!contain(s)) {
       throw "The state does not exist";
     }
     return this->costOfState[s];
   }
-  State<T>* poll() {
+  State<T> *poll() {
+    // get the smallest element in pq
     if (pq.size() == 0) {
       throw "The queue is empty";
     }
-    State<T>* s = pq[0];
+    State<T> *s = pq[0];
     this->costOfState.erase(s->getState());
     pq.erase(pq.begin());
     contains_map.erase(s->getState());
     return s;
   }
-  void push(State<T>* s) {
+  void push(State<T> *s) {
+    // push element to pq
     int i = binarySearch(s->getCost(), pq.size(), 0);
     if (contain(*s)) {
       remove(*s);
@@ -88,7 +94,7 @@ class StatePriorityQueue {
     return pq.size() == 0;
   }
   void printQueue() {
-    for (State<T>* s : pq) {
+    for (State<T> *s : pq) {
       cout << s->getState() << ": " << s->getCost() << endl;
     }
   }

@@ -6,13 +6,14 @@
 #define EX4__SEARCHER_H_
 #include "Solution.h"
 #include "Searchable.h"
-template<typename T,typename P>
+template<typename T, typename P>
 class Searcher {
  public:
-  virtual Solution<P> search(Searchable<T>&) = 0;
+  virtual Solution<P> search(Searchable<T> &) = 0;
   virtual int getNumberOfNodeEvaluated() = 0;
-  virtual Searcher* getClone(){};
-
+  virtual Searcher *getClone() { return nullptr; };
+  virtual ~Searcher() = default;
+  virtual int getSearcherID() = 0;
 };
 
 #endif //EX4__SEARCHER_H_

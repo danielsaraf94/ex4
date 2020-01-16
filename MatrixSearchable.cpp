@@ -4,21 +4,23 @@
 
 #include "MatrixSearchable.h"
 MatrixSearchable::MatrixSearchable(MatrixProblem *m) {
-  this->matrix_problem = m;
+  matrix_problem = m;
+  Point start_point = m->GetStart();
+  init_state = new State<Point>(start_point);
+  init_state->setCameFrom(NULL);
+  init_state->setCost(m->getValuebyIndex(start_point.getX(), start_point.getY()));
+  goal_state = new State<Point>(m->GetFinish());
+  total_states.push_front(init_state);
+  total_states.push_front(goal_state);
 }
 bool MatrixSearchable::isGoalState(State<Point> *s) {
   return (this->matrix_problem->GetFinish() == s->getState());
 }
 State<Point> *MatrixSearchable::getInitialState() {
-  Point p = this->matrix_problem->GetStart();
-  State<Point> *nState = new State<Point>(p);
-  int value = this->matrix_problem->getValuebyIndex(p.getX(), p.getX());
-  nState->setCameFrom(NULL);
-  nState->setCost(value);
-  return nState;
+  return init_state;
 }
 State<Point> *MatrixSearchable::getGoalState() {
-  return new State<Point>(matrix_problem->GetFinish());
+  return goal_state;
 }
 
 list<State<Point> *> MatrixSearchable::getAllPossibleStates(State<Point> *s) {
@@ -33,6 +35,7 @@ list<State<Point> *> MatrixSearchable::getAllPossibleStates(State<Point> *s) {
       newState->setCameFrom(s);
       newState->setCost(s->getCost() + value);
       list.push_front(newState);
+      total_states.push_front(newState);
     }
   }
   if (y < (matrix_problem->GetColsNum() - 1)) {
@@ -43,6 +46,7 @@ list<State<Point> *> MatrixSearchable::getAllPossibleStates(State<Point> *s) {
       newState->setCameFrom(s);
       newState->setCost(s->getCost() + value);
       list.push_front(newState);
+      total_states.push_front(newState);
     }
   }
   if (x > 0) {
@@ -53,6 +57,7 @@ list<State<Point> *> MatrixSearchable::getAllPossibleStates(State<Point> *s) {
       newState->setCameFrom(s);
       newState->setCost(s->getCost() + value);
       list.push_front(newState);
+      total_states.push_front(newState);
     }
   }
   if (y > 0) {
@@ -63,8 +68,13 @@ list<State<Point> *> MatrixSearchable::getAllPossibleStates(State<Point> *s) {
       newState->setCameFrom(s);
       newState->setCost(s->getCost() + value);
       list.push_front(newState);
+      total_states.push_front(newState);
     }
   }
-
   return list;
+}
+MatrixSearchable::~MatrixSearchable() {
+  for (State<Point> *s : total_states)
+    if (s != nullptr)
+      delete (s);
 }

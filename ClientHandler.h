@@ -7,6 +7,7 @@
 class ClientHandler {
  public:
   virtual void handleClient(int) = 0;
-  virtual ClientHandler* getClone() {};
+  virtual ClientHandler* getClone() {return nullptr;};
+  virtual ~ClientHandler()= default;
 };
 #endif //EX4_5__CLIENTHANDLER_H_

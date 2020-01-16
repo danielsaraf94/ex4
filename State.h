@@ -20,10 +20,10 @@ class State {
   bool operator!=(const State &a) const {
     return !(*this == *a);
   }
-  State<T>(int cost,T state, State<T>* cameFrom) {
-    this->cost = cost;
-    this->state = state;
-    this->cameFrom = cameFrom;
+  State<T>(int c,T s, State<T>* cf) {
+    this->cost = c;
+    this->state = s;
+    this->cameFrom = cf;
   }
   State<T>(T s) {
     this->state = s;

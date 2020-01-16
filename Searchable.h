@@ -10,10 +10,11 @@ using namespace std;
 template<typename T>
 class Searchable {
  public:
-  virtual State<T>* getInitialState() = 0;
-  virtual bool isGoalState(State<T>* s) = 0;
-  virtual list<State<T>*> getAllPossibleStates(State<T>* s) = 0;
-  virtual State<T>* getGoalState(){}
+  virtual State<T> *getInitialState() = 0;
+  virtual bool isGoalState(State<T> *s) = 0;
+  virtual list<State<T> *> getAllPossibleStates(State<T> *s) = 0;
+  virtual State<T> *getGoalState() { return nullptr; };
+  virtual ~Searchable() = default;
 };
 
 #endif //EX4__SEARCHABLE_H_

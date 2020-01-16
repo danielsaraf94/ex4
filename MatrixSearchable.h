@@ -8,14 +8,17 @@
 #include "Point.h"
 #include "list"
 #include "MatrixProblem.h"
-class MatrixSearchable:public Searchable<Point> {
-  MatrixProblem* matrix_problem;
+class MatrixSearchable : public Searchable<Point> {
+  MatrixProblem *matrix_problem;
+  State<Point> *init_state = nullptr, *goal_state = nullptr;
+  list<State<Point>*> total_states;
  public:
-  MatrixSearchable(MatrixProblem*);
-  State<Point>* getInitialState();
-  bool isGoalState(State<Point>* s);
-  list<State<Point>*> getAllPossibleStates(State<Point>* s);
-  State<Point>* getGoalState();
+  MatrixSearchable(MatrixProblem *);
+  State<Point> *getInitialState();
+  bool isGoalState(State<Point> *s);
+  list<State<Point> *> getAllPossibleStates(State<Point> *s);
+  State<Point> *getGoalState();
+  ~MatrixSearchable();
 };
 
 #endif //EX4__MATRIXSEARCHABLE_H_
