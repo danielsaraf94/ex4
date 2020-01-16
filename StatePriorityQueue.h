@@ -12,21 +12,21 @@ using namespace std;
 template<typename T>
 class StatePriorityQueue {
   unordered_map<T, bool> contains_map;
-  vector<State<T>> pq;
+  vector<State<T>*> pq;
   map<State<T>, double> costOfState;
   int binarySearch(double cost, int size, int location) {
     if (size == 0) {
       return location;
     }
     if (size == 1) {
-      if (cost < pq[location].getCost()) {
+      if (cost < pq[location]->getCost()) {
         return location;
       } else {
         return location + 1;
       }
     }
     int newSize = size / 2;
-    if (cost < pq[location + newSize].getCost()) {
+    if (cost < pq[location + newSize]->getCost()) {
       return binarySearch(cost, newSize, location);
     } else {
       return binarySearch(cost, size - newSize, location + newSize);
@@ -35,7 +35,7 @@ class StatePriorityQueue {
   int findState(T s) {
     int i, size = pq.size();
     for (i = 0; i < size; i++) {
-      if (pq[i].getState() == s) {
+      if (pq[i]->getState() == s) {
         return i;
       }
     }
@@ -52,6 +52,7 @@ class StatePriorityQueue {
     }
     contains_map.erase(s.getState());
     int i = findState(s.getState());
+    delete (pq[i]);
     pq.erase(pq.begin() + i);
     this->costOfState.erase(s.getState());
   }
@@ -61,23 +62,23 @@ class StatePriorityQueue {
     }
     return this->costOfState[s];
   }
-  State<T> poll() {
+  State<T>* poll() {
     if (pq.size() == 0) {
       throw "The queue is empty";
     }
-    State<T> s = pq[0];
-    this->costOfState.erase(s.getState());
+    State<T>* s = pq[0];
+    this->costOfState.erase(s->getState());
     pq.erase(pq.begin());
-    contains_map.erase(s.getState());
+    contains_map.erase(s->getState());
     return s;
   }
-  void push(State<T> s) {
-    int i = binarySearch(s.getCost(), pq.size(), 0);
-    if (contain(s)) {
-      remove(s);
+  void push(State<T>* s) {
+    int i = binarySearch(s->getCost(), pq.size(), 0);
+    if (contain(*s)) {
+      remove(*s);
     }
-    contains_map[s.getState()] = true;
-    this->costOfState[s] = s.getCost();
+    contains_map[s->getState()] = true;
+    this->costOfState[*s] = s->getCost();
     pq.insert(pq.begin() + i, s);
   }
   int GetCount() const {
@@ -87,8 +88,8 @@ class StatePriorityQueue {
     return pq.size() == 0;
   }
   void printQueue() {
-    for (State<T> s : pq) {
-      cout << s.getState() << ": " << s.getCost() << endl;
+    for (State<T>* s : pq) {
+      cout << s->getState() << ": " << s->getCost() << endl;
     }
   }
 };

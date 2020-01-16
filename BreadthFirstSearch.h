@@ -20,20 +20,29 @@ class BreadthFirstSearch : public Searcher<T,vector<State<T>>>{
     list<State<T>*> list;
     unordered_map<T, bool> map;
     queue<State<T>*> queue;
-    map[searchable.getInitialState()->getState()] = true;
     queue.push((searchable.getInitialState()));
+    map[queue.front()->getState()] = true;
     while (!(queue.empty())) {
       num_of_node_evaluated++;
       v = queue.front();
       queue.pop();
-      if (searchable.isGoalState(v))
-        return backTrace(*v);
+      if (searchable.isGoalState(v)){
+        State<T> goal = (*v);
+        delete(v);
+        while (!(queue.empty())) {
+          delete (queue.front());
+          queue.pop();
+        }
+        return backTrace(goal);
+      }
       list = searchable.getAllPossibleStates(v);
       for (State<T>* s : list) {
         if (map.find(s->getState()) == map.end()) {
           map[s->getState()] = true;
           s->setCameFrom(v);
           queue.push(s);
+        }else{
+          delete(s);
         }
       }
     }
@@ -42,8 +51,10 @@ class BreadthFirstSearch : public Searcher<T,vector<State<T>>>{
     vector<State<T>> vec;
     vec.push_back(s);
     while (s.getCameFrom() != NULL) {
+      State<T>* del = s.getCameFrom();
       s = *(s.getCameFrom());
       vec.push_back(s);
+      delete(del);
     }
     vector<State<T>> ret_vec;
     for (int i = vec.size() - 1; i >= 0; i--) {

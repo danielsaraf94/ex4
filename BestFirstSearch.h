@@ -25,9 +25,12 @@ class BestFirstSearch : public Searcher<T, vector<State<T>>> {
     vector<State<T>> vec;
     vec.push_back(s);
     while (s.getCameFrom() != NULL) {
+      State<T>* del = s.getCameFrom();
       s = *(s.getCameFrom());
       vec.push_back(s);
+      delete(del);
     }
+    emptyOpenlist();
     vector<State<T>> ret_vec;
     for (int i = vec.size() - 1; i >= 0; i--) {
       ret_vec.push_back(vec[i]);
@@ -36,7 +39,10 @@ class BestFirstSearch : public Searcher<T, vector<State<T>>> {
     solution.SetSolutionDescribe(ret_vec);
     return solution;
   }
-
+  void emptyOpenlist(){
+    while (!(open_list.isEmpty()))
+      delete (open_list.poll());
+  }
   State<T> popOpenList() {
     evaluatedNodes++;
     return open_list.poll();
@@ -54,33 +60,32 @@ class BestFirstSearch : public Searcher<T, vector<State<T>>> {
 
   Solution<vector<State<T>>> search(Searchable<T> &s) {
     evaluatedNodes = 0;
-    while (!(open_list.isEmpty()))
-      open_list.poll();
+    emptyOpenlist();
     closed.clear();
     unordered_map<T, bool> map;
-    open_list.push(*(s.getInitialState()));
+    open_list.push(s.getInitialState());
     while (!open_list.isEmpty()) {
       evaluatedNodes++;
-      State<T> *n = new State<T>(open_list.poll());
+      State<T> *n = open_list.poll();
       closed.insert(*n);
       map[n->getState()] = true;
       if (s.isGoalState(n)) {
-        return backTrace(*n);
+        State<T> goal = *n;
+        delete(n);
+        return backTrace(goal);
       }
       list<State<T> *> successors = s.getAllPossibleStates(n);
       for (State<T> *state: successors) {
         if (map.find(state->getState()) == map.end() && !open_list.contain(*state)) {
-          open_list.push(*state);
-          delete(state);
+          open_list.push(state);
         } else if (open_list.contain(*state)) {
           if (state->getCost() < open_list.getStateCost(*state)) {
             open_list.remove(*state);
-            open_list.push(*state);
-            delete(state);
+            open_list.push(state);
           }
-          else{
-            delete(state);
-          }
+        }
+        else{
+          delete(state);
         }
       }
     }

@@ -17,7 +17,10 @@ State<Point> *MatrixSearchable::getInitialState() {
   nState->setCost(value);
   return nState;
 }
-State<Point> *MatrixSearchable::getGoalState() { return new State<Point>(matrix_problem->GetFinish()); }
+State<Point> *MatrixSearchable::getGoalState() {
+  return new State<Point>(matrix_problem->GetFinish());
+}
+
 list<State<Point> *> MatrixSearchable::getAllPossibleStates(State<Point> *s) {
   list<State<Point> *> list;
   int x = s->getState().getX();

@@ -23,7 +23,10 @@ class ObjectAdapter : public Solver<Problem<MatrixProblem>, Solution<string>> {
   Solution<string> solve(Problem<MatrixProblem> p) {
     MatrixProblem *m = new MatrixProblem(p.GetProblemDescribe());
     this->searchable = new MatrixSearchable(m);
-    return adapt(this->searcher->search(*(this->searchable)));
+    Solution<string> newSol= adapt(this->searcher->search(*(this->searchable)));
+    delete(m);
+    delete(searchable);
+    return newSol;
   }
   Solution<string> adapt(Solution<vector<State<Point>>> s) {
     string str = "";

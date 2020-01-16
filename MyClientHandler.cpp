@@ -115,10 +115,11 @@ void MyClientHandler::handleClient(int client_socket) {
     cache_manager->saveSolution(key, solve_str);
     locker.unlock();
   }
-  char *temp = new char[solve_str.length() + 1];
+  //char *temp = new char[solve_str.length() + 1];
+  char *temp =(char *) malloc((solve_str.length()+1)* sizeof(char));
   strcpy(temp, solve_str.c_str());
   int is_sent = send(client_socket, temp, strlen(temp), 0);
-  delete (temp);
+  free (temp);
   if (is_sent == -1) {
     std::cout << "Error sending message" << std::endl;
   }
@@ -128,10 +129,11 @@ bool MyClientHandler::checkProblemValidation(Point start, Point finish, int rows
   if (!(start.getX() >= 0 && start.getX() < rows && start.getY() >= 0 && start.getY() < cols &&
       finish.getX() >= 0 && finish.getX() < rows && finish.getY() >= 0 && finish.getY() < cols)) {
     string solve_str = "invalid problem, start or finish point are out of matrix";
-    char *temp = new char[solve_str.length() + 1];
+  //  char *temp = new char[solve_str.length() + 1];
+    char *temp =(char *) malloc((solve_str.length()+1)* sizeof(char));
     strcpy(temp, solve_str.c_str());
     int is_sent = send(client_socket, temp, strlen(temp), 0);
-    delete (temp);
+    free (temp);
     if (is_sent == -1) {
       std::cout << "Error sending message" << std::endl;
     }
