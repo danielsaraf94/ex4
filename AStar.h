@@ -20,16 +20,17 @@ class AStar : public Searcher<T, vector<State<T>>> {
   int getNumberOfNodeEvaluated() { return num_of_node_evaluated; }
 
   Solution<vector<State<T>>> search(Searchable<T> &searchable) {
+    double tentative_gScore;
     State<T> *current;
+    bool flag;
     list<State<T> *> list;
     set<State<T>> open_set;
     open_set.insert(*(searchable.getInitialState()));
     unordered_map<State<T>, State<T>> came_from;
-    unordered_map<State<T>, int> g_score;
-    g_score[*searchable.getInitialState()] = 0;
-    unordered_map<State<T>, int> f_score;
-    f_score[*searchable.getInitialState()] = getH(*searchable.getInitialState(), searchable);
-
+    unordered_map<T, int> g_score;
+    g_score[searchable.getInitialState()->getState()] = 0;
+    unordered_map<T, int> f_score;
+    f_score[searchable.getInitialState()->getState()] = getH(*searchable.getInitialState(), searchable);
     while (!open_set.empty()) {
       num_of_node_evaluated++;
       current = findLowestFscore(open_set, f_score);
@@ -38,12 +39,16 @@ class AStar : public Searcher<T, vector<State<T>>> {
       open_set.erase(*current);
       list = searchable.getAllPossibleStates(current);
       for (State<T> *neighbor : list) {
-        double tentative_gScore = g_score[*current] + (neighbor->getCost() - current->getCost());
-        if ((tentative_gScore < g_score[*neighbor]) || g_score[*neighbor] == 0) {
+        flag = false;
+        tentative_gScore = g_score[current->getState()] + (neighbor->getCost() - current->getCost());
+        if (g_score.find(neighbor->getState()) != g_score.end()) {
+          if (tentative_gScore < g_score[neighbor->getState()])
+            flag = true;
+        } else flag = true;
+        if (flag) {
           came_from[*neighbor] = *current;
-          cout<<neighbor->getState()<<endl;
-          g_score[*neighbor] = tentative_gScore;
-          f_score[*neighbor] = g_score[*neighbor] + getH(*neighbor, searchable);
+          g_score[neighbor->getState()] = tentative_gScore;
+          f_score[neighbor->getState()] = g_score[neighbor->getState()] + getH(*neighbor, searchable);
           if (open_set.find(*neighbor) == open_set.end())
             open_set.insert(*neighbor);
         }
@@ -53,13 +58,15 @@ class AStar : public Searcher<T, vector<State<T>>> {
   }
 
   Solution<vector<State<T>>> reconstruct_path(unordered_map<State<T>, State<T>> came_from, State<T> *current) {
-    //vector<State<T>> total_path;
-    //  while (came_from.find(current) != came_from.end())
-    //  total_path.prepend(current);
-    //current = came_from[current];
-    //Solution<vector<State<T>>> solution;
-    //solution.SetSolutionDescribe(total_path);
-    //return solution;
+    vector<State<T>> total_path;
+    total_path.insert(total_path.end(), *current);
+    while (came_from.find(*current) != came_from.end()) {
+      total_path.insert(total_path.end(), *current);
+      current = &came_from[*current];
+    }
+    Solution<vector<State<T>>> solution;
+    solution.SetSolutionDescribe(total_path);
+    return solution;
   }
 
   double getH(State<Point> node, Searchable<Point> &searchable) {
@@ -69,14 +76,15 @@ class AStar : public Searcher<T, vector<State<T>>> {
     return (dx + dy);
   }
 
-  State<T> *findLowestFscore(set<State<T>> open_set, unordered_map<State<T>, int> f_score) {
+  State<T> *findLowestFscore(set<State<T>> open_set, unordered_map<T, int> f_score) {
     State<T> *lowest = new State<T>();
-    int min_fscore=999999999;
-    for (State<T> s : open_set){
-      if(f_score[s]<min_fscore){
-        min_fscore=f_score[s];
-        lowest = &s;
-      }
+    int min_fscore = 999999999;
+    for (State<T> s : open_set) {
+      if (f_score.find(s.getState()) != f_score.end())
+        if (f_score[s.getState()] < min_fscore) {
+          min_fscore = f_score[s.getState()];
+          lowest = &s;
+        }
     }
 
     lowest = new State<T>(lowest->getCost(), lowest->getState(), lowest->getCameFrom());
