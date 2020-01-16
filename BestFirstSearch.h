@@ -22,6 +22,7 @@ class BestFirstSearch : public Searcher<T, vector<State<T>>> {
     return new BestFirstSearch<T>();
   };
   Solution<vector<State<T>>> backTrace(State<T> s) {
+    // generate the path from start node to the goal (s)
     vector<State<T>> vec;
     vec.push_back(s);
     while (s.getCameFrom() != NULL) {
@@ -62,18 +63,22 @@ class BestFirstSearch : public Searcher<T, vector<State<T>>> {
     emptyOpenlist();
     closed.clear();
     unordered_map<T, bool> map;
+    // start with the initialize state
     open_list.push(s.getInitialState());
     while (!open_list.isEmpty()) {
+      // count the nodes we open
       evaluatedNodes++;
       State<T> *n = open_list.poll();
       closed.insert(*n);
       map[n->getState()] = true;
       if (s.isGoalState(n)) {
+        // if we find the goal state, generate the path from start to goal
         State<T> goal = *n;
         return backTrace(goal);
       }
       list<State<T> *> successors = s.getAllPossibleStates(n);
       for (State<T> *state: successors) {
+        // check if it is not in open and close
         if (map.find(state->getState()) == map.end() && !open_list.contain(*state)) {
           open_list.push(state);
         } else if (open_list.contain(*state)) {

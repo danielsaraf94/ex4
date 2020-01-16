@@ -41,13 +41,16 @@ class AStar : public Searcher<T, vector<State<T>>> {
     double gCost;
     unordered_map<T, bool> map;
     State<T>* initalState = searchable.getInitialState();
+    // start node is the initialize node
     open_list.push(initalState);
     list<State<T>*> successors;
     realCost[initalState->getState()]=initalState->getCost();
     while(!open_list.isEmpty()){
       State<T> *n = open_list.poll();
+      // count the number of nodes we open
       num_of_node_evaluated++;
       if (searchable.isGoalState(n))
+        // if we find the goal, generate the path from start to it
         return reconstruct_path(*n);
       closed.insert(*n);
       map[n->getState()] = true;
@@ -68,6 +71,7 @@ class AStar : public Searcher<T, vector<State<T>>> {
         }
       }
     }
+    // open set in empty but goal never found
     throw "cant reach goal";
   }
 
