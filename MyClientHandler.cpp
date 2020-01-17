@@ -117,7 +117,23 @@ void MyClientHandler::handleClient(int client_socket) {
   } else {
     cout << "problem " << key << " do not exists in file system, solving.." << endl;
     auto *problem = new Problem<MatrixProblem>(matrix_problem);
-    solve_str = (solver->solve(*problem)).GetSolutionDescribe();
+    try {
+      // try to solve the problem, if there is no solution send an appropriate message to client
+      solve_str = (solver->solve(*problem)).GetSolutionDescribe();
+    }catch (...){
+      solve_str = "invalid problem, no path found between start point to finish point";
+      char *temp = (char *) malloc((solve_str.length() + 1) * sizeof(char));
+      strcpy(temp, solve_str.c_str());
+      int is_sent = send(client_socket, temp, strlen(temp), 0);
+      free(temp);
+      if (is_sent == -1) {
+        std::cout << "Error sending message" << std::endl;
+      }
+      delete (problem);
+      close(client_socket);
+      cout << "cant solve problem, disconnect client.." << endl;
+      return;
+    }
     cout << "problem solved! sending solution to client.." << endl;
     delete (problem);
     locker.lock();
